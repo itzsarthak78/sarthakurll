@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Sarthak URL – Contact & Support</title>
+    <meta name="description" content="Contact Sarthak URL support. Reach out for help with URL shortening, API integration, or any other questions." />
+    <link rel="canonical" href="https://sarthakurll.vercel.app/contact.html" />
+    <meta property="og:title" content="Sarthak URL – Contact & Support" />
+    <meta property="og:description" content="Get in touch with the Sarthak URL team." />
+    <meta property="og:image" content="https://sarthakurll.vercel.app/assets/banner.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --purple-50: #faf5ff;
+            --purple-100: #f3e8ff;
+            --purple-200: #e9d5ff;
+            --purple-300: #d8b4fe;
+            --purple-400: #c084fc;
+            --purple-500: #a855f7;
+            --purple-600: #9333ea;
+            --purple-700: #7c3aed;
+            --purple-800: #6d28d9;
+            --white: #ffffff;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-600: #52525b;
+            --gray-700: #3f3f46;
+            --gray-800: #27272a;
+            --gray-900: #18181b;
+            --shadow-sm: 0 2px 8px rgba(107, 70, 193, 0.06);
+            --shadow-md: 0 8px 30px rgba(107, 70, 193, 0.10);
+            --shadow-lg: 0 20px 50px rgba(107, 70, 193, 0.14);
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            color: var(--gray-900);
+            padding: 1.2rem;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(20px) saturate(1.2);
+            -webkit-backdrop-filter: blur(20px) saturate(1.2);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(192, 132, 252, 0.18);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition);
+            padding: 1.8rem;
+        }
+        .glass:hover {
+            border-color: rgba(192, 132, 252, 0.4);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 0.6rem 1.4rem;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(24px) saturate(1.3);
+            -webkit-backdrop-filter: blur(24px) saturate(1.3);
+            border-radius: 100px;
+            border: 1px solid rgba(192, 132, 252, 0.18);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 2rem;
+            transition: all var(--transition);
+        }
+        .navbar:hover {
+            border-color: rgba(192, 132, 252, 0.3);
+            box-shadow: var(--shadow-md);
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-style: italic;
+            background: linear-gradient(135deg, var(--purple-800), var(--purple-500), var(--purple-400));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .logo i {
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, var(--purple-500), var(--purple-700));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            padding: 0.45rem 1rem;
+            border-radius: 100px;
+            transition: all var(--transition);
+        }
+        .nav-links a:hover {
+            color: var(--purple-700);
+            background: var(--purple-50);
+        }
+        .nav-links a.active {
+            color: var(--purple-700);
+            background: var(--purple-50);
+            font-weight: 600;
+        }
+        .nav-links a i {
+            margin-right: 4px;
+        }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: var(--gray-700);
+            cursor: pointer;
+            padding: 0.3rem;
+            transition: all var(--transition);
+        }
+        .nav-toggle:hover {
+            color: var(--purple-700);
+        }
+        .hero-banner {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #f5eeff, #ede6ff, #faf5ff);
+            border: 1px solid rgba(192, 132, 252, 0.15);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            max-height: 220px;
+            min-height: 60px;
+        }
+        .footer {
+            margin-top: 2.5rem;
+            padding: 1.2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--gray-200);
+            color: var(--gray-600);
+            font-size: 0.8rem;
+        }
+        .footer a {
+            color: var(--purple-700);
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.4rem;
+        }
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        h1 i {
+            color: var(--purple-500);
+            margin-right: 0.5rem;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--purple-800), var(--purple-500));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.5rem;
+            color: var(--purple-800);
+        }
+        p {
+            margin-bottom: 0.8rem;
+            line-height: 1.7;
+            color: var(--gray-700);
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            margin: 1.5rem 0;
+        }
+        .contact-item {
+            background: var(--purple-50);
+            border-radius: var(--radius-md);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            border: 1px solid var(--purple-200);
+            transition: all var(--transition);
+        }
+        .contact-item:hover {
+            border-color: var(--purple-400);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-sm);
+        }
+        .contact-item i {
+            font-size: 2rem;
+            color: var(--purple-500);
+            margin-bottom: 0.5rem;
+        }
+        .contact-item h3 {
+            font-weight: 600;
+            color: var(--gray-800);
+            font-size: 1rem;
+        }
+        .contact-item p {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            margin-bottom: 0;
+        }
+        .contact-item a {
+            color: var(--purple-700);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+        .input-premium {
+            background: var(--white);
+            border: 1.5px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.2rem;
+            font-size: 0.95rem;
+            width: 100%;
+            transition: all var(--transition);
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-900);
+        }
+        .input-premium:focus {
+            outline: none;
+            border-color: var(--purple-400);
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.10);
+        }
+        .input-premium::placeholder {
+            color: var(--gray-300);
+            font-weight: 400;
+        }
+        textarea.input-premium {
+            min-height: 130px;
+            resize: vertical;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--purple-700), var(--purple-500));
+            border: none;
+            padding: 0.9rem 1.8rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            color: white;
+            transition: all var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 4px 16px rgba(124, 58, 237, 0.25);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(124, 58, 237, 0.35);
+        }
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .mt-2 {
+            margin-top: 1.5rem;
+        }
+        .success-msg {
+            background: #dcfce7;
+            color: #166534;
+            border-radius: var(--radius-md);
+            padding: 0.7rem 1rem;
+            border-left: 4px solid #22c55e;
+            display: none;
+            margin-top: 1rem;
+        }
+        .error-msg {
+            background: #fef2f2;
+            color: #b91c1c;
+            border-radius: var(--radius-md);
+            padding: 0.7rem 1rem;
+            border-left: 4px solid #ef4444;
+            display: none;
+            margin-top: 1rem;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid var(--gray-200);
+            margin: 1.5rem 0;
+        }
+        .spinner-sm {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.7s linear infinite;
+            flex-shrink: 0;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 0.8rem;
+            }
+            .navbar {
+                padding: 0.5rem 1rem;
+                border-radius: 80px;
+                margin-bottom: 1.2rem;
+            }
+            .logo {
+                font-size: 1.2rem;
+            }
+            .logo i {
+                font-size: 1rem;
+            }
+            .nav-toggle {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.2rem;
+                padding-top: 0.6rem;
+                border-top: 1px solid var(--gray-200);
+                margin-top: 0.6rem;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-links a {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.85rem;
+                border-radius: var(--radius-sm);
+            }
+            .glass {
+                padding: 1.2rem;
+                border-radius: var(--radius-md);
+            }
+            h1 {
+                font-size: 1.7rem;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            .hero-banner {
+                min-height: 60px;
+                border-radius: var(--radius-md);
+                margin-bottom: 1.2rem;
+            }
+            .hero-banner img {
+                max-height: 140px;
+                min-height: 50px;
+            }
+            .footer {
+                font-size: 0.7rem;
+                padding: 1rem 0;
+                margin-top: 1.5rem;
+            }
+            .footer .footer-links {
+                gap: 1rem;
+            }
+        }
+        @media (max-width: 420px) {
+            body {
+                padding: 0.5rem;
+            }
+            .navbar {
+                padding: 0.4rem 0.8rem;
+                border-radius: 60px;
+            }
+            .logo {
+                font-size: 1rem;
+            }
+            .glass {
+                padding: 0.8rem;
+                border-radius: var(--radius-sm);
+            }
+            h1 {
+                font-size: 1.4rem;
+            }
+            .contact-item {
+                padding: 1rem 0.8rem;
+            }
+            .hero-banner img {
+                max-height: 100px;
+            }
+        }
+        @media (max-width: 768px) and (orientation: landscape) {
+            .navbar {
+                padding: 0.3rem 1rem;
+            }
+            .hero-banner {
+                min-height: 50px;
+            }
+            .hero-banner img {
+                max-height: 100px;
+            }
+        }
+        @media (pointer: coarse) {
+            .btn-primary,
+            .nav-links a {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            .nav-links a {
+                min-height: 40px;
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--purple-300);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--purple-400);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- NAVBAR -->
+        <nav class="navbar">
+            <div class="logo"><i class="fas fa-link"></i> Sarthak URL</div>
+            <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+            <div class="nav-links" id="navLinks">
+                <a href="/">Home</a>
+                <a href="/api.html"><i class="fas fa-code"></i> API</a>
+                <a href="/privacy.html"><i class="fas fa-shield-alt"></i> Privacy</a>
+                <a href="/terms.html"><i class="fas fa-file-contract"></i> Terms</a>
+                <a href="/contact.html" class="active"><i class="fas fa-envelope"></i> Contact</a>
+            </div>
+        </nav>
+
+        <!-- HERO BANNER -->
+        <div class="hero-banner glass">
+            <img src="/assets/banner.jpg" alt="Contact Sarthak URL Support" />
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="glass">
+            <h1><i class="fas fa-envelope"></i> Contact <span class="gradient-text">Us</span></h1>
+            <p>We're here to help! Reach out via email or use the contact form below.</p>
+
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email Support</h3>
+                    <p><a href="mailto:NotUrDaquavis@gmail.com">NotUrDaquavis@gmail.com</a></p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <h3>Response Time</h3>
+                    <p>Within 24 hours</p>
+                </div>
+            </div>
+
+            <hr>
+
+            <h2><i class="fas fa-paper-plane" style="color:var(--purple-500);"></i> Send us a message</h2>
+            <form id="contactForm" style="margin-top:1rem;">
+                <div class="grid-2">
+                    <input type="text" id="from_name" class="input-premium" placeholder="Your Name" required>
+                    <input type="email" id="from_email" class="input-premium" placeholder="Your Email" required>
+                </div>
+                <input type="text" id="subject" class="input-premium" placeholder="Subject" style="margin:1rem 0;" required>
+                <textarea id="message" class="input-premium" placeholder="Your message..." required></textarea>
+                <div class="mt-2">
+                    <button type="submit" id="sendBtn" class="btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                        <span id="btnText">Send Message</span>
+                        <span class="spinner-sm hidden" id="btnSpinner"></span>
+                    </button>
+                </div>
+            </form>
+
+            <div id="formSuccess" class="success-msg">
+                <i class="fas fa-check-circle"></i> Thank you! We'll get back to you soon.
+            </div>
+            <div id="formError" class="error-msg">
+                <i class="fas fa-exclamation-circle"></i> Oops! Something went wrong. Please try again.
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p>&copy; 2026 Sarthak URL. <strong>Developed by Sarthak</strong></p>
+            <div class="footer-links">
+                <a href="/privacy.html">Privacy</a>
+                <a href="/terms.html">Terms</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/api.html">API Docs</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // EmailJS Init
+        (function() {
+            emailjs.init({
+                publicKey: "bYXWgDjNgk8D_5-5h",
+            });
+        })();
+
+        // DOM refs
+        const form = document.getElementById('contactForm');
+        const sendBtn = document.getElementById('sendBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const successDiv = document.getElementById('formSuccess');
+        const errorDiv = document.getElementById('formError');
+
+        // Service & Template IDs
+        const SERVICE_ID = 'service_ltl3ws6';
+        const TEMPLATE_ID = 'template_hnwdmqe';
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Disable button and show spinner
+            sendBtn.disabled = true;
+            btnText.textContent = 'Sending...';
+            btnSpinner.classList.remove('hidden');
+            successDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+
+            // Gather data
+            const formData = {
+                from_name: document.getElementById('from_name').value,
+                from_email: document.getElementById('from_email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value,
+            };
+
+            try {
+                const response = await emailjs.send(SERVICE_ID, TEMPLATE_ID, formData);
+                console.log('SUCCESS!', response);
+                successDiv.style.display = 'block';
+                form.reset();
+            } catch (error) {
+                console.error('FAILED...', error);
+                errorDiv.style.display = 'block';
+            } finally {
+                sendBtn.disabled = false;
+                btnText.textContent = 'Send Message';
+                btnSpinner.classList.add('hidden');
+                // Auto-hide success/error after 5 seconds
+                setTimeout(() => {
+                    successDiv.style.display = 'none';
+                    errorDiv.style.display = 'none';
+                }, 5000);
+            }
+        });
+
+        // Mobile nav toggle
+        document.getElementById('navToggle').addEventListener('click', function() {
+            const links = document.getElementById('navLinks');
+            links.classList.toggle('open');
+            this.innerHTML = links.classList.contains('open') ?
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+    </script>
+
+</body>
+</html>
