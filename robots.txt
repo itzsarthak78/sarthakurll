@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sarthakurll.vercel.app/sitemap.xml
