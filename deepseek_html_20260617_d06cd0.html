@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Sarthak URL – Premium URL Shortener</title>
+    <meta name="description" content="Shorten, customize, and track your links with Sarthak URL. Generate QR codes, custom aliases, and powerful analytics.">
+    <link rel="canonical" href="https://sarthakurll.vercel.app/">
+    <meta property="og:title" content="Sarthak URL – Premium URL Shortener">
+    <meta property="og:description" content="Shorten, customize, and track your links. Free QR codes, custom aliases, and developer API.">
+    <meta property="og:image" content="https://sarthakurll.vercel.app/assets/banner.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        /* ========== RESET & VARIABLES ========== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --purple-50: #faf5ff;
+            --purple-100: #f3e8ff;
+            --purple-200: #e9d5ff;
+            --purple-300: #d8b4fe;
+            --purple-400: #c084fc;
+            --purple-500: #a855f7;
+            --purple-600: #9333ea;
+            --purple-700: #7c3aed;
+            --purple-800: #6d28d9;
+            --purple-900: #5b21b6;
+            --white: #ffffff;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-600: #52525b;
+            --gray-700: #3f3f46;
+            --gray-800: #27272a;
+            --gray-900: #18181b;
+            --shadow-sm: 0 2px 8px rgba(107, 70, 193, 0.06);
+            --shadow-md: 0 8px 30px rgba(107, 70, 193, 0.10);
+            --shadow-lg: 0 20px 50px rgba(107, 70, 193, 0.14);
+            --shadow-xl: 0 30px 60px rgba(107, 70, 193, 0.18);
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --radius-xl: 36px;
+            --transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--gray-900);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        /* subtle background glow */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -40%;
+            right: -20%;
+            width: 70%;
+            height: 80%;
+            background: radial-gradient(ellipse, rgba(168, 85, 247, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -30%;
+            left: -20%;
+            width: 60%;
+            height: 70%;
+            background: radial-gradient(ellipse, rgba(139, 92, 246, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ========== CONTAINER ========== */
+        .app-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1.2rem 1.2rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== GLASS CARD (PREMIUM) ========== */
+        .glass {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(20px) saturate(1.2);
+            -webkit-backdrop-filter: blur(20px) saturate(1.2);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(192, 132, 252, 0.18);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(192, 132, 252, 0.3), rgba(255, 255, 255, 0.1), rgba(192, 132, 252, 0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .glass:hover {
+            border-color: rgba(192, 132, 252, 0.4);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 0.6rem 1.4rem;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(24px) saturate(1.3);
+            -webkit-backdrop-filter: blur(24px) saturate(1.3);
+            border-radius: 100px;
+            border: 1px solid rgba(192, 132, 252, 0.18);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.8rem;
+            transition: all var(--transition);
+        }
+        .navbar:hover {
+            border-color: rgba(192, 132, 252, 0.3);
+            box-shadow: var(--shadow-md);
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-style: italic;
+            background: linear-gradient(135deg, var(--purple-800), var(--purple-500), var(--purple-400));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .logo i {
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, var(--purple-500), var(--purple-700));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            padding: 0.45rem 1rem;
+            border-radius: 100px;
+            transition: all var(--transition);
+            letter-spacing: -0.2px;
+        }
+        .nav-links a:hover {
+            color: var(--purple-700);
+            background: var(--purple-50);
+        }
+        .nav-links a.active {
+            color: var(--purple-700);
+            background: var(--purple-50);
+            font-weight: 600;
+        }
+        .nav-links a i {
+            margin-right: 4px;
+            font-size: 0.8rem;
+        }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: var(--gray-700);
+            cursor: pointer;
+            padding: 0.3rem;
+            transition: all var(--transition);
+        }
+        .nav-toggle:hover {
+            color: var(--purple-700);
+        }
+
+        /* ========== HERO BANNER ========== */
+        .hero-banner {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #f5eeff, #ede6ff, #faf5ff);
+            border: 1px solid rgba(192, 132, 252, 0.15);
+            position: relative;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            max-height: 220px;
+            min-height: 80px;
+        }
+        .hero-banner .banner-placeholder {
+            padding: 1.5rem 2rem;
+            text-align: center;
+            width: 100%;
+        }
+        .hero-banner .banner-placeholder h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.4rem, 4vw, 2.6rem);
+            font-weight: 700;
+            font-style: italic;
+            background: linear-gradient(135deg, var(--purple-800), var(--purple-500));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .hero-banner .banner-placeholder p {
+            color: var(--gray-600);
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
+            margin-top: 0.3rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ========== MAIN GRID ========== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 0.9fr;
+            gap: 1.8rem;
+            align-items: start;
+        }
+
+        /* ========== SHORTENER CARD ========== */
+        .shortener-card {
+            padding: 1.8rem 1.8rem 2rem;
+        }
+        .shortener-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .shortener-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .shortener-header h2 i {
+            color: var(--purple-500);
+            font-size: 1.3rem;
+        }
+        .badge-premium {
+            background: linear-gradient(135deg, var(--purple-100), var(--purple-200));
+            padding: 0.25rem 1rem;
+            border-radius: 100px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--purple-800);
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            border: 1px solid rgba(192, 132, 252, 0.2);
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .input-premium {
+            background: var(--white);
+            border: 1.5px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--gray-900);
+            transition: all var(--transition);
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.2px;
+        }
+        .input-premium::placeholder {
+            color: var(--gray-300);
+            font-weight: 400;
+        }
+        .input-premium:focus {
+            outline: none;
+            border-color: var(--purple-400);
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.10);
+            transform: translateY(-1px);
+        }
+        .input-premium:hover {
+            border-color: var(--purple-300);
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--purple-700), var(--purple-600), var(--purple-500));
+            border: none;
+            padding: 0.9rem 1.8rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+            transition: all var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            box-shadow: 0 4px 16px rgba(124, 58, 237, 0.25);
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.2px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.15) 100%);
+            pointer-events: none;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 8px 28px rgba(124, 58, 237, 0.35);
+        }
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-secondary {
+            background: var(--purple-50);
+            border: 1.5px solid var(--purple-200);
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: var(--purple-700);
+            transition: all var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-secondary:hover {
+            background: var(--purple-100);
+            border-color: var(--purple-400);
+            transform: translateY(-1px);
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.15);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--gray-200);
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: var(--gray-700);
+            transition: all var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-outline:hover {
+            border-color: var(--purple-400);
+            color: var(--purple-700);
+            background: var(--purple-50);
+        }
+
+        /* ========== RESULT BOX ========== */
+        .result-section {
+            margin-top: 1.2rem;
+            animation: fadeSlideUp 0.4s ease;
+        }
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .result-box {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            background: var(--purple-50);
+            border-radius: var(--radius-md);
+            padding: 1.2rem;
+            border: 1px solid var(--purple-200);
+            transition: all var(--transition);
+        }
+        .result-box:hover {
+            border-color: var(--purple-300);
+        }
+        .result-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .result-url {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--purple-800);
+            word-break: break-all;
+            flex: 1;
+            min-width: 0;
+        }
+        .result-actions {
+            display: flex;
+            gap: 0.4rem;
+            flex-shrink: 0;
+        }
+        .result-actions button {
+            background: var(--white);
+            border: 1px solid var(--purple-200);
+            padding: 0.4rem 0.8rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--purple-700);
+            cursor: pointer;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .result-actions button:hover {
+            background: var(--purple-100);
+            border-color: var(--purple-400);
+            transform: translateY(-1px);
+        }
+        .result-actions button.copied {
+            background: #dcfce7;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+        /* ========== QR CODE ========== */
+        .qr-section {
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--purple-200);
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .qr-section .qr-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        #qrcode {
+            background: white;
+            padding: 6px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-sm);
+            display: inline-block;
+            line-height: 0;
+        }
+        #qrcode img,
+        #qrcode canvas {
+            display: block !important;
+            width: 80px !important;
+            height: 80px !important;
+            border-radius: 4px;
+        }
+        .qr-download-btn {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            padding: 0.3rem 0.8rem;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .qr-download-btn:hover {
+            border-color: var(--purple-400);
+            color: var(--purple-700);
+            background: var(--purple-50);
+        }
+
+        /* ========== STATS CARDS ========== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin: 1.2rem 0;
+        }
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 1rem 0.8rem;
+            text-align: center;
+            border: 1px solid var(--gray-200);
+            transition: all var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .stat-card:hover {
+            border-color: var(--purple-300);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple-800), var(--purple-500));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-top: 0.15rem;
+        }
+
+        /* ========== API KEY CARD ========== */
+        .api-key-card {
+            padding: 1.2rem 1.4rem;
+            background: var(--purple-50);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--purple-200);
+            margin-top: 0.8rem;
+            transition: all var(--transition);
+        }
+        .api-key-card:hover {
+            border-color: var(--purple-300);
+        }
+        .api-key-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .api-key-header span {
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--gray-800);
+        }
+        .api-key-header span i {
+            color: var(--purple-500);
+        }
+        .api-key-display {
+            font-family: 'Inter', monospace;
+            font-size: 0.8rem;
+            color: var(--purple-800);
+            background: var(--white);
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--purple-200);
+            margin-top: 0.5rem;
+            word-break: break-all;
+            font-weight: 500;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar-card {
+            padding: 1.6rem 1.6rem 1.8rem;
+        }
+        .sidebar-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.3px;
+        }
+        .sidebar-card h3 i {
+            color: var(--purple-500);
+        }
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 0.9rem;
+            color: var(--gray-700);
+            padding: 0.5rem 0.8rem;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition);
+        }
+        .feature-list li:hover {
+            background: var(--purple-50);
+        }
+        .feature-list li i {
+            color: var(--purple-500);
+            font-size: 1rem;
+            width: 1.3rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .feature-list li strong {
+            color: var(--gray-900);
+            font-weight: 600;
+        }
+
+        /* ========== API SNIPPET ========== */
+        .api-snippet {
+            background: var(--gray-900);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-top: 0.8rem;
+            overflow-x: auto;
+            position: relative;
+        }
+        .api-snippet code {
+            font-family: 'Inter', monospace;
+            font-size: 0.7rem;
+            color: #e4e4e7;
+            white-space: pre;
+            line-height: 1.6;
+        }
+        .api-snippet .tk-keyword {
+            color: #c084fc;
+        }
+        .api-snippet .tk-string {
+            color: #86efac;
+        }
+        .api-snippet .tk-function {
+            color: #fcd34d;
+        }
+        .api-snippet .tk-comment {
+            color: #71717a;
+        }
+
+        /* ========== ERROR TOAST ========== */
+        .error-toast {
+            background: #fef2f2;
+            color: #b91c1c;
+            border-radius: var(--radius-md);
+            padding: 0.7rem 1rem;
+            margin-top: 0.6rem;
+            border-left: 4px solid #ef4444;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: fadeSlideUp 0.3s ease;
+        }
+        .error-toast i {
+            font-size: 1rem;
+        }
+
+        /* ========== SPINNER ========== */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2.5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.7s linear infinite;
+            flex-shrink: 0;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            margin-top: 2.5rem;
+            padding: 1.2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--gray-200);
+            color: var(--gray-600);
+            font-size: 0.8rem;
+        }
+        .footer a {
+            color: var(--purple-700);
+            text-decoration: none;
+            transition: all var(--transition);
+        }
+        .footer a:hover {
+            color: var(--purple-500);
+            text-decoration: underline;
+        }
+        .footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.4rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .stats-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .app-container {
+                padding: 0.8rem 0.8rem 1.5rem;
+            }
+            .navbar {
+                padding: 0.5rem 1rem;
+                border-radius: 80px;
+                margin-bottom: 1.2rem;
+            }
+            .logo {
+                font-size: 1.2rem;
+            }
+            .logo i {
+                font-size: 1rem;
+            }
+            .nav-toggle {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.2rem;
+                padding-top: 0.6rem;
+                border-top: 1px solid var(--gray-200);
+                margin-top: 0.6rem;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-links a {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.85rem;
+                border-radius: var(--radius-sm);
+            }
+            .hero-banner {
+                min-height: 70px;
+                border-radius: var(--radius-md);
+                margin-bottom: 1.2rem;
+            }
+            .hero-banner .banner-placeholder {
+                padding: 1rem 1.2rem;
+            }
+            .hero-banner .banner-placeholder h1 {
+                font-size: 1.2rem;
+            }
+            .hero-banner .banner-placeholder p {
+                font-size: 0.75rem;
+            }
+            .hero-banner img {
+                max-height: 120px;
+                min-height: 60px;
+            }
+            .shortener-card {
+                padding: 1.2rem 1.2rem 1.5rem;
+            }
+            .shortener-header h2 {
+                font-size: 1.2rem;
+            }
+            .shortener-header h2 i {
+                font-size: 1rem;
+            }
+            .badge-premium {
+                font-size: 0.55rem;
+                padding: 0.2rem 0.7rem;
+            }
+            .input-premium {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+                border-radius: var(--radius-sm);
+            }
+            .btn-primary {
+                padding: 0.75rem 1.2rem;
+                font-size: 0.9rem;
+                border-radius: var(--radius-sm);
+            }
+            .stats-row {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+                margin: 1rem 0;
+            }
+            .stat-card {
+                padding: 0.7rem 0.3rem;
+                border-radius: var(--radius-sm);
+            }
+            .stat-number {
+                font-size: 1.2rem;
+            }
+            .stat-label {
+                font-size: 0.6rem;
+            }
+            .sidebar-card {
+                padding: 1.2rem 1.2rem 1.4rem;
+            }
+            .sidebar-card h3 {
+                font-size: 1rem;
+            }
+            .feature-list li {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.5rem;
+            }
+            .feature-list li i {
+                font-size: 0.85rem;
+                width: 1.1rem;
+            }
+            .api-key-card {
+                padding: 0.8rem 1rem;
+            }
+            .api-key-header span {
+                font-size: 0.75rem;
+            }
+            .api-key-display {
+                font-size: 0.65rem;
+                padding: 0.3rem 0.6rem;
+            }
+            .result-box {
+                padding: 0.8rem;
+            }
+            .result-url {
+                font-size: 0.8rem;
+            }
+            .result-actions button {
+                font-size: 0.65rem;
+                padding: 0.3rem 0.6rem;
+            }
+            .qr-section {
+                gap: 0.8rem;
+            }
+            #qrcode img,
+            #qrcode canvas {
+                width: 60px !important;
+                height: 60px !important;
+            }
+            .qr-download-btn {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.6rem;
+            }
+            .api-snippet code {
+                font-size: 0.6rem;
+            }
+            .footer {
+                font-size: 0.7rem;
+                padding: 1rem 0;
+                margin-top: 1.5rem;
+            }
+            .footer .footer-links {
+                gap: 1rem;
+            }
+            .error-toast {
+                font-size: 0.75rem;
+                padding: 0.5rem 0.8rem;
+            }
+        }
+        @media (max-width: 420px) {
+            .app-container {
+                padding: 0.5rem 0.5rem 1rem;
+            }
+            .navbar {
+                padding: 0.4rem 0.8rem;
+                border-radius: 60px;
+            }
+            .logo {
+                font-size: 1rem;
+            }
+            .logo i {
+                font-size: 0.9rem;
+            }
+            .shortener-card {
+                padding: 0.8rem 0.8rem 1.2rem;
+                border-radius: var(--radius-md);
+            }
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            .stats-row .stat-card:last-child {
+                grid-column: span 2;
+            }
+            .stat-number {
+                font-size: 1.1rem;
+            }
+            .result-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .result-actions {
+                justify-content: flex-end;
+            }
+            .hero-banner .banner-placeholder h1 {
+                font-size: 1rem;
+            }
+            .sidebar-card {
+                padding: 0.8rem 0.8rem 1rem;
+                border-radius: var(--radius-md);
+            }
+            .api-key-card {
+                padding: 0.6rem 0.8rem;
+            }
+            .api-key-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .api-key-header .btn-secondary {
+                align-self: flex-start;
+            }
+            .qr-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            #qrcode img,
+            #qrcode canvas {
+                width: 70px !important;
+                height: 70px !important;
+            }
+            .nav-links a {
+                font-size: 0.8rem;
+                padding: 0.5rem 0.6rem;
+            }
+        }
+        @media (max-width: 768px) and (orientation: landscape) {
+            .navbar {
+                padding: 0.3rem 1rem;
+            }
+            .hero-banner {
+                min-height: 50px;
+            }
+            .hero-banner img {
+                max-height: 80px;
+            }
+            .main-grid {
+                gap: 1rem;
+            }
+            .shortener-card {
+                padding: 1rem;
+            }
+            .stats-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (pointer: coarse) {
+            .btn-primary,
+            .btn-secondary,
+            .btn-outline,
+            .result-actions button,
+            .qr-download-btn,
+            .nav-links a {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            .nav-links a {
+                min-height: 40px;
+            }
+            .result-actions button {
+                min-height: 36px;
+                min-width: 36px;
+            }
+            .btn-secondary,
+            .btn-outline {
+                min-height: 38px;
+            }
+        }
+
+        /* ========== UTILITY ========== */
+        .hidden {
+            display: none !important;
+        }
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+        .mt-2 {
+            margin-top: 1rem;
+        }
+        .text-purple {
+            color: var(--purple-700);
+        }
+
+        /* scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--purple-300);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--purple-400);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+
+        <!-- NAVBAR -->
+        <nav class="navbar">
+            <div class="logo"><i class="fas fa-link"></i> Sarthak URL</div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+            <div class="nav-links" id="navLinks">
+                <a href="/" class="active"><i class="fas fa-home"></i> Home</a>
+                <a href="/api.html"><i class="fas fa-code"></i> API</a>
+                <a href="/privacy.html"><i class="fas fa-shield-alt"></i> Privacy</a>
+                <a href="/terms.html"><i class="fas fa-file-contract"></i> Terms</a>
+                <a href="/contact.html"><i class="fas fa-envelope"></i> Contact</a>
+            </div>
+        </nav>
+
+        <!-- HERO BANNER -->
+        <div class="hero-banner glass">
+            <div class="banner-placeholder">
+                <h1>Shorten. Brand. Grow.</h1>
+                <p>Premium link management with custom aliases, QR codes, and powerful analytics</p>
+            </div>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="main-grid">
+
+            <!-- LEFT: Shortener -->
+            <div class="glass shortener-card">
+                <div class="shortener-header">
+                    <h2><i class="fas fa-magic"></i> Shorten <span style="font-weight:300;">&amp;</span> <span class="text-purple">Go</span></h2>
+                    <span class="badge-premium"><i class="fas fa-bolt"></i> Free</span>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="longUrl" class="input-premium" placeholder="Paste your long URL here..." autocomplete="off">
+                    <input type="text" id="customAlias" class="input-premium" placeholder="Custom alias (optional)" autocomplete="off">
+                    <button id="shortenBtn" class="btn-primary">
+                        <i class="fas fa-rocket"></i>
+                        <span id="btnText">Generate short link</span>
+                        <span class="spinner hidden" id="btnSpinner"></span>
+                    </button>
+                </div>
+                <div id="errorContainer"></div>
+                <div id="resultSection" class="result-section hidden">
+                    <div class="result-box">
+                        <div class="result-row">
+                            <span class="result-url" id="shortUrlText"></span>
+                            <div class="result-actions">
+                                <button id="copyShortBtn"><i class="far fa-copy"></i> Copy</button>
+                                <button id="openShortBtn"><i class="fas fa-external-link-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="qr-section">
+                            <span class="qr-label"><i class="fas fa-qrcode"></i> QR Code</span>
+                            <div id="qrcode"></div>
+                            <button id="downloadQrBtn" class="qr-download-btn"><i class="fas fa-download"></i> Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Sidebar -->
+            <div class="glass sidebar-card">
+                <h3><i class="fas fa-star"></i> Why Sarthak?</h3>
+                <ul class="feature-list">
+                    <li><i class="fas fa-link"></i> <strong>Custom aliases</strong> – Brand your links</li>
+                    <li><i class="fas fa-qrcode"></i> <strong>QR Codes</strong> – Generate instantly</li>
+                    <li><i class="fas fa-chart-line"></i> <strong>Analytics</strong> – Track clicks in real-time</li>
+                    <li><i class="fas fa-code"></i> <strong>Developer API</strong> – Integrate with ease</li>
+                    <li><i class="fas fa-shield-alt"></i> <strong>Secure &amp; fast</strong> – Enterprise-grade</li>
+                </ul>
+                <div class="stats-row">
+                    <div class="stat-card"><div class="stat-number" id="totalLinksStat">1,247</div><div class="stat-label">Links</div></div>
+                    <div class="stat-card"><div class="stat-number" id="apiCallsStat">8.9k</div><div class="stat-label">API Calls</div></div>
+                    <div class="stat-card"><div class="stat-number">125k</div><div class="stat-label">Clicks</div></div>
+                </div>
+                <div class="api-key-card">
+                    <div class="api-key-header">
+                        <span><i class="fas fa-key"></i> API Key</span>
+                        <button id="generateKeyBtn" class="btn-secondary"><i class="fas fa-sync-alt"></i> Generate</button>
+                    </div>
+                    <div class="api-key-display" id="apiKeyDisplay">⚡ No active key</div>
+                    <button id="copyApiKeyBtn" class="btn-outline mt-1" style="font-size:0.7rem; padding:0.25rem 0.8rem;"><i class="far fa-copy"></i> Copy key</button>
+                </div>
+                <div style="margin-top:1rem;">
+                    <div style="font-size:0.75rem; font-weight:600; color:var(--gray-600); margin-bottom:0.3rem; display:flex; align-items:center; gap:0.3rem;">
+                        <i class="fas fa-terminal"></i> Quick start
+                    </div>
+                    <div class="api-snippet">
+                        <code><span class="tk-keyword">fetch</span>(<span class="tk-string">"https://sarthakurll.vercel.app/api/shorten"</span>, {
+                        method: <span class="tk-string">"POST"</span>,
+                        headers: { <span class="tk-string">"x-api-key"</span>: <span class="tk-string">"YOUR_KEY"</span> },
+                        body: <span class="tk-function">JSON</span>.<span class="tk-keyword">stringify</span>({
+                        url: <span class="tk-string">"https://google.com"</span>
+                        })
+                        })</code>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p>&copy; 2026 Sarthak URL. <strong>Developed by Sarthak</strong></p>
+            <p style="font-size:0.8rem; margin-top:0.3rem;">
+                <i class="fas fa-envelope" style="color:var(--purple-500);"></i> 
+                Support: <a href="mailto:NotUrDaquavis@gmail.com">NotUrDaquavis@gmail.com</a>
+            </p>
+            <div class="footer-links">
+                <a href="/privacy.html">Privacy</a>
+                <a href="/terms.html">Terms</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/api.html">API Docs</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // DOM refs
+            const longUrlInput = document.getElementById('longUrl');
+            const customAliasInput = document.getElementById('customAlias');
+            const shortenBtn = document.getElementById('shortenBtn');
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
+            const errorContainer = document.getElementById('errorContainer');
+            const resultSection = document.getElementById('resultSection');
+            const shortUrlText = document.getElementById('shortUrlText');
+            const copyShortBtn = document.getElementById('copyShortBtn');
+            const openShortBtn = document.getElementById('openShortBtn');
+            const qrContainer = document.getElementById('qrcode');
+            const downloadQrBtn = document.getElementById('downloadQrBtn');
+            const generateKeyBtn = document.getElementById('generateKeyBtn');
+            const apiKeyDisplay = document.getElementById('apiKeyDisplay');
+            const copyApiKeyBtn = document.getElementById('copyApiKeyBtn');
+            const totalLinksStat = document.getElementById('totalLinksStat');
+            const apiCallsStat = document.getElementById('apiCallsStat');
+            const navToggle = document.getElementById('navToggle');
+            const navLinks = document.getElementById('navLinks');
+
+            // State
+            let usedAliases = new Set();
+            let totalShortened = 1247;
+            let totalApiCalls = 8912;
+            let currentApiKey = null;
+            let isShortening = false;
+
+            // Load from localStorage
+            if (localStorage.getItem('sarthak_total')) totalShortened = parseInt(localStorage.getItem('sarthak_total'), 10) ||
+                1247;
+            if (localStorage.getItem('sarthak_apicalls')) totalApiCalls = parseInt(localStorage.getItem('sarthak_apicalls'),
+                10) || 8912;
+            if (localStorage.getItem('sarthak_aliases')) {
+                try { usedAliases = new Set(JSON.parse(localStorage.getItem('sarthak_aliases'))); } catch (_) {}
+            }
+            if (localStorage.getItem('sarthak_apikey')) currentApiKey = localStorage.getItem('sarthak_apikey');
+
+            function updateStatsUI() {
+                totalLinksStat.textContent = totalShortened.toLocaleString();
+                apiCallsStat.textContent = totalApiCalls.toLocaleString();
+                localStorage.setItem('sarthak_total', String(totalShortened));
+                localStorage.setItem('sarthak_apicalls', String(totalApiCalls));
+                localStorage.setItem('sarthak_aliases', JSON.stringify([...usedAliases]));
+                if (currentApiKey) localStorage.setItem('sarthak_apikey', currentApiKey);
+                else localStorage.removeItem('sarthak_apikey');
+            }
+
+            function generateRandomSlug() {
+                const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let slug;
+                let attempts = 0;
+                do {
+                    slug = '';
+                    for (let i = 0; i < 6; i++) slug += chars[Math.floor(Math.random() * chars.length)];
+                    attempts++;
+                    if (attempts > 10) slug = 'l' + Date.now().toString(36);
+                } while (usedAliases.has(slug));
+                return slug;
+            }
+
+            async function apiRequest(endpoint, options) {
+                const response = await fetch(endpoint, {
+                    method: options.method || 'POST',
+                    headers: options.headers || {},
+                    body: options.body || null,
+                });
+                if (!response.ok) {
+                    let errorMsg = `HTTP ${response.status}`;
+                    try { const data = await response.json(); if (data && data.message) errorMsg = data.message; } catch (_) {}
+                    throw new Error(errorMsg);
+                }
+                return await response.json();
+            }
+
+            function renderApiKey() {
+                apiKeyDisplay.textContent = currentApiKey ? '🔑 ' + currentApiKey : '⚡ No active key';
+            }
+
+            function showError(msg) {
+                errorContainer.innerHTML =
+                    `<div class="error-toast"><i class="fas fa-exclamation-triangle"></i> ${msg}</div>`;
+                setTimeout(() => { if (errorContainer.querySelector('.error-toast')) errorContainer.innerHTML = ''; }, 4500);
+            }
+
+            function clearError() { errorContainer.innerHTML = ''; }
+
+            function generateQR(text) {
+                qrContainer.innerHTML = '';
+                if (!text) return;
+                try {
+                    new QRCode(qrContainer, {
+                        text: text,
+                        width: 80,
+                        height: 80,
+                        colorDark: '#1a102e',
+                        colorLight: '#ffffff',
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                } catch (_) { qrContainer.innerHTML = '<span style="font-size:0.6rem;color:var(--gray-600);">QR error</span>'; }
+            }
+
+            function downloadQR() {
+                const canvas = qrContainer.querySelector('canvas');
+                if (!canvas) { showError('No QR code to download.'); return; }
+                const link = document.createElement('a');
+                link.download = 'sarthak-qr-' + Date.now() + '.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }
+
+            async function handleShorten() {
+                clearError();
+                const url = longUrlInput.value.trim();
+                if (!url) { showError('Please paste a valid URL'); return; }
+                if (isShortening) return;
+                isShortening = true;
+                shortenBtn.disabled = true;
+                btnText.textContent = 'Processing...';
+                btnSpinner.classList.remove('hidden');
+
+                try {
+                    const custom = customAliasInput.value.trim() || '';
+                    const body = JSON.stringify({ url, custom: custom || undefined });
+                    const headers = { 'Content-Type': 'application/json' };
+                    if (currentApiKey) headers['x-api-key'] = currentApiKey;
+
+                    const result = await apiRequest('/api/shorten', { method: 'POST', headers, body });
+                    if (result && result.short) {
+                        shortUrlText.textContent = result.short;
+                        resultSection.classList.remove('hidden');
+                        generateQR(result.short);
+                        totalShortened += 1;
+                        totalApiCalls += 1;
+                        updateStatsUI();
+                        if (window.innerWidth < 768) resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        throw new Error('Invalid response');
+                    }
+                } catch (err) {
+                    showError(err.message || 'Something went wrong.');
+                    resultSection.classList.add('hidden');
+                } finally {
+                    isShortening = false;
+                    shortenBtn.disabled = false;
+                    btnText.textContent = 'Generate short link';
+                    btnSpinner.classList.add('hidden');
+                }
+            }
+
+            async function copyShortUrl() {
+                const text = shortUrlText.textContent;
+                if (!text) return;
+                try {
+                    await navigator.clipboard.writeText(text);
+                    const orig = copyShortBtn.innerHTML;
+                    copyShortBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    copyShortBtn.classList.add('copied');
+                    setTimeout(() => { copyShortBtn.innerHTML = orig;
+                        copyShortBtn.classList.remove('copied'); }, 1800);
+                } catch (_) {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    ta.remove();
+                    const orig = copyShortBtn.innerHTML;
+                    copyShortBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    copyShortBtn.classList.add('copied');
+                    setTimeout(() => { copyShortBtn.innerHTML = orig;
+                        copyShortBtn.classList.remove('copied'); }, 1800);
+                }
+            }
+
+            function openShortUrl() {
+                const text = shortUrlText.textContent;
+                if (text) window.open(text, '_blank');
+            }
+
+            async function handleGenerateKey() {
+                generateKeyBtn.disabled = true;
+                generateKeyBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+                try {
+                    const result = await apiRequest('/api/generate-key', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: '{}' });
+                    if (result && result.apiKey) {
+                        currentApiKey = result.apiKey;
+                        renderApiKey();
+                        updateStatsUI();
+                        generateKeyBtn.innerHTML = '<i class="fas fa-check"></i> Ready';
+                        setTimeout(() => { generateKeyBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Generate';
+                            generateKeyBtn.disabled = false; }, 1800);
+                    } else {
+                        throw new Error('Invalid response');
+                    }
+                } catch (err) {
+                    showError('Failed to generate API key: ' + err.message);
+                    generateKeyBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Generate';
+                    generateKeyBtn.disabled = false;
+                }
+            }
+
+            async function copyApiKey() {
+                if (!currentApiKey) { showError('No API key yet. Generate one first.'); return; }
+                try {
+                    await navigator.clipboard.writeText(currentApiKey);
+                    const orig = copyApiKeyBtn.innerHTML;
+                    copyApiKeyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => { copyApiKeyBtn.innerHTML = orig; }, 1800);
+                } catch (_) {
+                    const ta = document.createElement('textarea');
+                    ta.value = currentApiKey;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    ta.remove();
+                    const orig = copyApiKeyBtn.innerHTML;
+                    copyApiKeyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => { copyApiKeyBtn.innerHTML = orig; }, 1800);
+                }
+            }
+
+            // Mobile nav
+            navToggle.addEventListener('click', function() {
+                const isOpen = navLinks.classList.toggle('open');
+                this.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
+            navLinks.querySelectorAll('a').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('open');
+                    navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+
+            // Events
+            shortenBtn.addEventListener('click', handleShorten);
+            copyShortBtn.addEventListener('click', copyShortUrl);
+            openShortBtn.addEventListener('click', openShortUrl);
+            downloadQrBtn.addEventListener('click', downloadQR);
+            generateKeyBtn.addEventListener('click', handleGenerateKey);
+            copyApiKeyBtn.addEventListener('click', copyApiKey);
+            longUrlInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleShorten(); });
+            customAliasInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleShorten(); });
+
+            // Init
+            renderApiKey();
+            updateStatsUI();
+            resultSection.classList.add('hidden');
+        })();
+    </script>
+</body>
+</html>
