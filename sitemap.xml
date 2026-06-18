@@ -3,22 +3,38 @@
 
   <url>
     <loc>https://sarthakurll.vercel.app/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <priority>1.0</priority>
   </url>
 
   <url>
     <loc>https://sarthakurll.vercel.app/api</loc>
+    <lastmod>2026-06-18</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://sarthakurll.vercel.app/analytics</loc>
+    <lastmod>2026-06-18</lastmod>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://sarthakurll.vercel.app/privacy</loc>
+    <lastmod>2026-06-18</lastmod>
+    <priority>0.5</priority>
   </url>
 
   <url>
     <loc>https://sarthakurll.vercel.app/terms</loc>
+    <lastmod>2026-06-18</lastmod>
+    <priority>0.5</priority>
   </url>
 
   <url>
     <loc>https://sarthakurll.vercel.app/contact</loc>
+    <lastmod>2026-06-18</lastmod>
+    <priority>0.6</priority>
   </url>
 
 </urlset>
