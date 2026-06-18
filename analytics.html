@@ -71,7 +71,6 @@
             box-shadow: var(--shadow-lg);
             transform: translateY(-3px);
         }
-        /* Navbar */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -193,53 +192,6 @@
             margin-top: 0.4rem;
         }
 
-        @media (max-width:768px){
-
-.stats-grid{
-grid-template-columns:1fr 1fr !important;
-}
-
-.charts-grid{
-grid-template-columns:1fr !important;
-}
-
-.chart-box{
-overflow:hidden;
-}
-
-.chart-container{
-height:220px !important;
-}
-}
-
-@media (max-width:480px){
-
-.stats-grid{
-grid-template-columns:1fr !important;
-}
-
-.analytics-input-wrap{
-flex-direction:column;
-}
-
-.analytics-input-wrap input{
-width:100%;
-}
-
-.btn-primary{
-width:100%;
-justify-content:center;
-}
-
-.stat-number{
-font-size:1.5rem;
-word-break:break-word;
-}
-
-.history-table{
-min-width:500px;
-}
-}
         /* Analytics Input */
         .analytics-input-wrap {
             display: flex;
@@ -314,7 +266,7 @@ min-width:500px;
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1.2rem;
             margin-bottom: 2rem;
         }
@@ -333,26 +285,22 @@ min-width:500px;
             box-shadow: var(--shadow-md);
         }
         .stat-number {
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--purple-800), var(--purple-500));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             line-height: 1.2;
+            word-break: break-word;
         }
         .stat-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 500;
             color: var(--gray-600);
             text-transform: uppercase;
             letter-spacing: 0.3px;
             margin-top: 0.15rem;
-        }
-        .stat-sub {
-            font-size: 0.75rem;
-            color: var(--gray-600);
-            margin-top: 0.2rem;
         }
 
         /* Charts & History */
@@ -369,6 +317,7 @@ min-width:500px;
             border: 1px solid var(--gray-200);
             box-shadow: var(--shadow-sm);
             min-width: 0;
+            overflow: hidden;
         }
         .chart-box h3 {
             font-size: 1rem;
@@ -387,15 +336,22 @@ min-width:500px;
             height: 200px;
             width: 100%;
             max-width: 100%;
+            overflow: hidden;
+        }
+        .chart-container canvas {
+            max-width: 100% !important;
+            height: auto !important;
         }
         .history-table-wrap {
             overflow-x: auto;
             margin-top: 1rem;
+            -webkit-overflow-scrolling: touch;
         }
         .history-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.85rem;
+            min-width: 400px;
         }
         .history-table th {
             text-align: left;
@@ -410,6 +366,7 @@ min-width:500px;
         .history-table td {
             padding: 0.4rem 0.5rem;
             border-bottom: 1px solid var(--gray-100);
+            white-space: nowrap;
         }
         .history-table tr:hover td {
             background: var(--purple-50);
@@ -422,20 +379,36 @@ min-width:500px;
             border-radius: 100px;
             font-size: 0.7rem;
             font-weight: 500;
+            white-space: nowrap;
         }
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
+            body {
+                padding: 0.8rem;
+            }
+            .glass {
+                padding: 1rem;
+                border-radius: var(--radius-md);
+            }
             .charts-grid {
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+            .stat-number {
+                font-size: 1.3rem;
+            }
+            .chart-container {
+                height: 160px;
             }
             .navbar {
                 padding: 0.5rem 1rem;
                 border-radius: 80px;
+                margin-bottom: 1.2rem;
             }
             .logo {
                 font-size: 1.2rem;
@@ -458,16 +431,17 @@ min-width:500px;
                 padding: 0.6rem 0.8rem;
                 border-radius: var(--radius-sm);
             }
-            .chart-container {
-                height: 160px;
+            .analytics-input-wrap input {
+                min-width: 100%;
             }
-            .glass {
-                padding: 1rem;
-                border-radius: var(--radius-md);
+            .analytics-input-wrap .btn-primary {
+                width: 100%;
+                justify-content: center;
             }
             .hero-banner {
                 min-height: 60px;
                 border-radius: var(--radius-md);
+                margin-bottom: 1.2rem;
             }
             .hero-banner img {
                 max-height: 140px;
@@ -479,18 +453,40 @@ min-width:500px;
                 margin-top: 1.5rem;
             }
             .footer .footer-links {
-                gap: 1rem;
+                gap: 0.8rem;
+            }
+            .history-table {
+                font-size: 0.75rem;
+                min-width: 300px;
+            }
+            .history-table th,
+            .history-table td {
+                padding: 0.3rem 0.4rem;
+            }
+            .badge {
+                font-size: 0.6rem;
+                padding: 0.05rem 0.4rem;
             }
         }
         @media (max-width: 420px) {
             .stats-grid {
                 grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
             }
-            .analytics-input-wrap input {
-                min-width: 100%;
+            .stat-card {
+                padding: 0.8rem 0.5rem;
+            }
+            .stat-number {
+                font-size: 1.1rem;
             }
             .chart-container {
-                height: 140px;
+                height: 130px;
+            }
+            .glass {
+                padding: 0.8rem;
+            }
+            .logo {
+                font-size: 1rem;
             }
         }
         .hidden {
@@ -499,19 +495,6 @@ min-width:500px;
         .mt-2 { margin-top: 1.5rem; }
         .text-center { text-align: center; }
         .text-muted { color: var(--gray-600); }
-        .flex { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
-        .gap-2 { gap: 0.8rem; }
-
-        /* Colourful chart palettes */
-        .color-palette {
-            --color-1: #3b82f6;
-            --color-2: #10b981;
-            --color-3: #f59e0b;
-            --color-4: #ef4444;
-            --color-5: #8b5cf6;
-            --color-6: #06b6d4;
-            --color-7: #ec4899;
-        }
     </style>
 </head>
 <body>
@@ -525,10 +508,10 @@ min-width:500px;
             <div class="nav-links" id="navLinks">
                 <a href="/">Home</a>
                 <a href="/api">API</a>
-                <a href="/analytics" class="active"><i class="fas fa-chart-line"></i> View Analytics</a>
                 <a href="/privacy">Privacy</a>
                 <a href="/terms">Terms</a>
                 <a href="/contact">Contact</a>
+                <a href="/analytics" class="active"><i class="fas fa-chart-line"></i> Analytics</a>
             </div>
         </nav>
 
@@ -617,6 +600,7 @@ min-width:500px;
                 <a href="/terms">Terms</a>
                 <a href="/contact">Contact</a>
                 <a href="/api">API Docs</a>
+                <a href="/analytics">Analytics</a>
             </div>
         </footer>
     </div>
@@ -674,7 +658,7 @@ min-width:500px;
                     throw new Error(text || `HTTP ${response.status}`);
                 }
                 const data = await response.json();
-                console.log('Analytics data:', data); // debug
+                console.log('Analytics data:', data);
 
                 renderStats(data);
                 renderCharts(data);
@@ -714,13 +698,12 @@ min-width:500px;
             `;
         }
 
-        // ===== RENDER CHARTS (colourful) =====
+        // ===== RENDER CHARTS =====
         function renderCharts(data) {
-            // Destroy existing charts
             Object.values(chartInstances).forEach(chart => chart.destroy());
             chartInstances = {};
 
-            // --- 7-Day Chart (Line) ---
+            // 7-Day Chart
             const labels = data.chartData.map(d => d.date);
             const values = data.chartData.map(d => d.clicks);
             const ctxDaily = document.getElementById('dailyChart').getContext('2d');
@@ -752,7 +735,7 @@ min-width:500px;
                 }
             });
 
-            // --- Device Chart (Pie) – multi colour ---
+            // Device Chart
             const devices = data.devices || {};
             const deviceLabels = Object.keys(devices);
             const deviceValues = Object.values(devices);
@@ -776,7 +759,7 @@ min-width:500px;
                 }
             });
 
-            // --- Browser Chart (Bar) – multi colour ---
+            // Browser Chart
             const browsers = data.browsers || {};
             const browserLabels = Object.keys(browsers);
             const browserValues = Object.values(browsers);
@@ -801,7 +784,7 @@ min-width:500px;
                 }
             });
 
-            // --- Country Chart (Bar) – multi colour ---
+            // Country Chart
             const countries = data.countries || {};
             const countryLabels = Object.keys(countries);
             const countryValues = Object.values(countries);
@@ -827,7 +810,7 @@ min-width:500px;
             });
         }
 
-        // ===== RENDER HISTORY TABLE =====
+        // ===== RENDER HISTORY =====
         function renderHistory(history) {
             const tbody = historyBody;
             tbody.innerHTML = '';
@@ -849,13 +832,13 @@ min-width:500px;
             });
         }
 
-        // ===== EVENT LISTENERS =====
+        // ===== EVENTS =====
         loadBtn.addEventListener('click', loadAnalytics);
         slugInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') loadAnalytics();
         });
 
-        // Check URL param ?slug=xxx
+        // Auto-load from URL param
         (function() {
             const params = new URLSearchParams(window.location.search);
             const slugParam = params.get('slug');
