@@ -7,15 +7,53 @@
     <!-- Google Site Verification -->
     <meta name="google-site-verification" content="2UFijFK-Fb4U8Hw9hti7d-TyD5-i1LtauXgdXcuMGl0" />
     
-    <title>Sarthak URL – Free URL Shortener</title>
-    <meta name="description" content="Shorten long URLs, create custom aliases, generate QR codes, and track analytics – all for free. Sarthak URL – the smart link shortener." />
+    <!-- SEO Title & Description -->
+    <title>Sarthak URL – Free URL Shortener & Custom Link Manager</title>
+    <meta name="description" content="Shorten long URLs, create custom aliases, generate QR codes, and track analytics with Sarthak URL – the smart, free URL shortener. Start shortening now." />
+    <meta name="keywords" content="Sarthak URL, URL shortener, free link shortener, custom aliases, QR code generator, link analytics, short links, branded links" />
     <link rel="canonical" href="https://sarthakurll.vercel.app/" />
-    <meta property="og:title" content="Sarthak URL – Free URL Shortener" />
-    <meta property="og:description" content="Shorten, customize, and track your links. Free QR codes, custom aliases, and developer API." />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Sarthak URL – Free URL Shortener & Custom Link Manager" />
+    <meta property="og:description" content="Shorten, customize, and track your links with Sarthak URL. Free QR codes, custom aliases, and developer API." />
     <meta property="og:image" content="https://sarthakurll.vercel.app/assets/banner.jpg" />
+    <meta property="og:url" content="https://sarthakurll.vercel.app/" />
+    <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sarthak URL – Free URL Shortener" />
+    <meta name="twitter:description" content="Shorten, customize, and track your links. Free QR codes, custom aliases, and developer API." />
+    
     <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
-    <meta name="theme-color" content="#c026d3">
+    <meta name="theme-color" content="#c026d3" />
+
+    <!-- JSON-LD Structured Data for Sarthak URL -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Sarthak URL",
+      "url": "https://sarthakurll.vercel.app/",
+      "description": "Shorten long URLs, create custom aliases, generate QR codes, and track analytics. Free and developer-friendly.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Modern browser",
+      "potentialAction": {
+        "@type": "CreateAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://sarthakurll.vercel.app/api/shorten",
+          "actionPlatform": [
+            "http://schema.org/DesktopWebPlatform",
+            "http://schema.org/MobileWebPlatform"
+          ]
+        },
+        "result": {
+          "@type": "CreativeWork",
+          "name": "Shortened URL"
+        }
+      }
+    }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -233,6 +271,7 @@
             object-fit: cover;
             max-height: 280px;
             min-height: 80px;
+            alt: "Sarthak URL – Free URL Shortener"
         }
         .main-grid {
             display: grid;
@@ -457,6 +496,35 @@
             background: #dcfce7;
             border-color: #86efac;
             color: #166534;
+        }
+        .analytics-row {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-top: 0.4rem;
+            flex-wrap: wrap;
+        }
+        .analytics-row .btn-analytics {
+            background: transparent;
+            border: 1.5px solid var(--purple-400);
+            padding: 0.3rem 0.8rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--purple-700);
+            cursor: pointer;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+        }
+        .analytics-row .btn-analytics:hover {
+            background: var(--purple-50);
+            border-color: var(--purple-600);
+            transform: translateY(-1px);
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.15);
         }
         .qr-section {
             margin-top: 0.8rem;
@@ -865,6 +933,10 @@
                 font-size: 0.65rem;
                 padding: 0.3rem 0.6rem;
             }
+            .analytics-row .btn-analytics {
+                font-size: 0.65rem;
+                padding: 0.25rem 0.6rem;
+            }
             .qr-section {
                 gap: 0.6rem;
                 flex-direction: column;
@@ -979,6 +1051,7 @@
             .btn-outline,
             .result-actions button,
             .qr-download-btn,
+            .analytics-row .btn-analytics,
             .nav-links a {
                 min-height: 44px;
                 min-width: 44px;
@@ -991,7 +1064,8 @@
                 min-width: 36px;
             }
             .btn-secondary,
-            .btn-outline {
+            .btn-outline,
+            .analytics-row .btn-analytics {
                 min-height: 38px;
             }
         }
@@ -1035,6 +1109,7 @@
             <div class="nav-links" id="navLinks">
                 <a href="/" class="active"><i class="fas fa-home"></i> Home</a>
                 <a href="/api"><i class="fas fa-code"></i> API</a>
+                <a href="/analytics"><i class="fas fa-chart-line"></i> Analytics</a>
                 <a href="/privacy"><i class="fas fa-shield-alt"></i> Privacy</a>
                 <a href="/terms"><i class="fas fa-file-contract"></i> Terms</a>
                 <a href="/contact"><i class="fas fa-envelope"></i> Contact</a>
@@ -1043,7 +1118,7 @@
 
         <!-- HERO BANNER -->
         <div class="hero-banner glass">
-            <img src="/assets/banner.jpg" alt="Sarthak URL Banner" />
+            <img src="/assets/banner.jpg" alt="Sarthak URL – Free URL Shortener" />
         </div>
 
         <!-- MAIN GRID -->
@@ -1073,6 +1148,12 @@
                                 <button id="copyShortBtn"><i class="far fa-copy"></i> Copy</button>
                                 <button id="openShortBtn"><i class="fas fa-external-link-alt"></i></button>
                             </div>
+                        </div>
+                        <!-- Analytics button row -->
+                        <div class="analytics-row" id="analyticsRow">
+                            <a id="analyticsLink" class="btn-analytics" target="_blank" style="display:none;">
+                                <i class="fas fa-chart-line"></i> View Analytics
+                            </a>
                         </div>
                         <div class="qr-section">
                             <span class="qr-label"><i class="fas fa-qrcode"></i> QR Code</span>
@@ -1163,6 +1244,7 @@
             const apiCallsStat = document.getElementById('apiCallsStat');
             const navToggle = document.getElementById('navToggle');
             const navLinks = document.getElementById('navLinks');
+            const analyticsLink = document.getElementById('analyticsLink');
 
             // State
             let usedAliases = new Set();
@@ -1278,6 +1360,12 @@
                         totalShortened += 1;
                         totalApiCalls += 1;
                         updateStatsUI();
+
+                        // Show analytics button
+                        const slug = result.short.split('/').pop();
+                        analyticsLink.href = `/analytics?slug=${slug}`;
+                        analyticsLink.style.display = 'inline-flex';
+
                         if (window.innerWidth < 768) resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     } else {
                         throw new Error('Invalid response');
@@ -1392,6 +1480,7 @@
             renderApiKey();
             updateStatsUI();
             resultSection.classList.add('hidden');
+            analyticsLink.style.display = 'none';
         })();
     </script>
 </body>
