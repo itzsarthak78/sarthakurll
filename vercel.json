@@ -5,6 +5,9 @@
     { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/terms", "destination": "/terms.html" },
     { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/analytics", "destination": "/analytics.html" },
+
+    { "source": "/api/:path*", "destination": "/api/:path*" },
 
     { "source": "/:slug", "destination": "/api/:slug" }
   ]
