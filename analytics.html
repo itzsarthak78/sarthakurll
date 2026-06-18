@@ -10,11 +10,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
 
     <style>
         /* ===== RESET & VARIABLES ===== */
-        * {
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -45,6 +48,10 @@
             --radius-lg: 28px;
             --transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
         }
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
         body {
             font-family: 'Inter', sans-serif;
             background: var(--white);
@@ -71,6 +78,12 @@
             box-shadow: var(--shadow-lg);
             transform: translateY(-3px);
         }
+        .glass .glass-inner {
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        /* ===== NAVBAR ===== */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -150,6 +163,8 @@
         .nav-toggle:hover {
             color: var(--purple-700);
         }
+
+        /* ===== HERO BANNER ===== */
         .hero-banner {
             border-radius: var(--radius-lg);
             overflow: hidden;
@@ -169,6 +184,8 @@
             max-height: 220px;
             min-height: 60px;
         }
+
+        /* ===== FOOTER ===== */
         .footer {
             margin-top: 2.5rem;
             padding: 1.2rem 0;
@@ -192,7 +209,7 @@
             margin-top: 0.4rem;
         }
 
-        /* Analytics Input */
+        /* ===== ANALYTICS INPUT ===== */
         .analytics-input-wrap {
             display: flex;
             gap: 0.8rem;
@@ -241,39 +258,18 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 28px rgba(124, 58, 237, 0.35);
         }
-        .btn-secondary {
-            background: var(--purple-50);
-            border: 1.5px solid var(--purple-200);
-            padding: 0.5rem 1.2rem;
-            border-radius: 100px;
-            font-weight: 500;
-            font-size: 0.8rem;
-            color: var(--purple-700);
-            transition: all var(--transition);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-family: 'Inter', sans-serif;
-        }
-        .btn-secondary:hover {
-            background: var(--purple-100);
-            border-color: var(--purple-400);
-            transform: translateY(-1px);
-            box-shadow: 0 0 12px rgba(168, 85, 247, 0.15);
-        }
 
-        /* Stats Grid */
+        /* ===== STATS GRID ===== */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 1.2rem;
             margin-bottom: 2rem;
         }
         .stat-card {
             background: var(--white);
             border-radius: var(--radius-md);
-            padding: 1.2rem 1rem;
+            padding: 1.2rem 0.8rem;
             text-align: center;
             border: 1px solid var(--gray-200);
             box-shadow: var(--shadow-sm);
@@ -285,7 +281,7 @@
             box-shadow: var(--shadow-md);
         }
         .stat-number {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--purple-800), var(--purple-500));
             -webkit-background-clip: text;
@@ -295,7 +291,7 @@
             word-break: break-word;
         }
         .stat-label {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             font-weight: 500;
             color: var(--gray-600);
             text-transform: uppercase;
@@ -303,10 +299,16 @@
             margin-top: 0.15rem;
         }
 
-        /* Charts & History */
+        /* ===== CHARTS GRID ===== */
         .charts-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .charts-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -333,7 +335,6 @@
         }
         .chart-container {
             position: relative;
-            height: 200px;
             width: 100%;
             max-width: 100%;
             overflow: hidden;
@@ -342,6 +343,8 @@
             max-width: 100% !important;
             height: auto !important;
         }
+
+        /* ===== HISTORY TABLE ===== */
         .history-table-wrap {
             overflow-x: auto;
             margin-top: 1rem;
@@ -381,8 +384,53 @@
             font-weight: 500;
             white-space: nowrap;
         }
+        .no-history {
+            padding: 1.5rem 0;
+            text-align: center;
+            color: var(--gray-600);
+        }
 
-        /* Mobile Responsive */
+        /* ===== UTILITY ===== */
+        .hidden {
+            display: none !important;
+        }
+        .mt-2 {
+            margin-top: 1.5rem;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-muted {
+            color: var(--gray-600);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--purple-800), var(--purple-500));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(168, 85, 247, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--purple-600);
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 0.8rem;
@@ -390,20 +438,6 @@
             .glass {
                 padding: 1rem;
                 border-radius: var(--radius-md);
-            }
-            .charts-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0.8rem;
-            }
-            .stat-number {
-                font-size: 1.3rem;
-            }
-            .chart-container {
-                height: 160px;
             }
             .navbar {
                 padding: 0.5rem 1rem;
@@ -413,6 +447,9 @@
             .logo {
                 font-size: 1.2rem;
             }
+            .logo i {
+                font-size: 1rem;
+            }
             .nav-toggle {
                 display: block;
             }
@@ -420,23 +457,21 @@
                 display: none;
                 width: 100%;
                 flex-direction: column;
+                align-items: stretch;
                 padding-top: 0.6rem;
                 border-top: 1px solid var(--gray-200);
                 margin-top: 0.6rem;
+                gap: 0.2rem;
             }
             .nav-links.open {
                 display: flex;
             }
             .nav-links a {
                 padding: 0.6rem 0.8rem;
+                font-size: 0.85rem;
                 border-radius: var(--radius-sm);
-            }
-            .analytics-input-wrap input {
-                min-width: 100%;
-            }
-            .analytics-input-wrap .btn-primary {
+                text-align: left;
                 width: 100%;
-                justify-content: center;
             }
             .hero-banner {
                 min-height: 60px;
@@ -447,6 +482,37 @@
                 max-height: 140px;
                 min-height: 50px;
             }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+            }
+            .stat-number {
+                font-size: 1.3rem;
+            }
+            .charts-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .charts-grid-2 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .chart-container {
+                height: 200px;
+            }
+            .chart-box {
+                padding: 0.8rem;
+            }
+            .chart-box h3 {
+                font-size: 0.9rem;
+            }
+            .analytics-input-wrap input {
+                min-width: 100%;
+            }
+            .analytics-input-wrap .btn-primary {
+                width: 100%;
+                justify-content: center;
+            }
             .footer {
                 font-size: 0.7rem;
                 padding: 1rem 0;
@@ -456,143 +522,218 @@
                 gap: 0.8rem;
             }
             .history-table {
-                font-size: 0.75rem;
-                min-width: 300px;
+                font-size: 0.7rem;
+                min-width: 280px;
             }
             .history-table th,
             .history-table td {
-                padding: 0.3rem 0.4rem;
+                padding: 0.25rem 0.35rem;
             }
             .badge {
-                font-size: 0.6rem;
+                font-size: 0.55rem;
                 padding: 0.05rem 0.4rem;
             }
         }
+
         @media (max-width: 420px) {
+            body {
+                padding: 0.5rem;
+            }
+            .glass {
+                padding: 0.6rem;
+                border-radius: var(--radius-sm);
+            }
             .stats-grid {
                 grid-template-columns: 1fr 1fr;
                 gap: 0.5rem;
             }
             .stat-card {
-                padding: 0.8rem 0.5rem;
+                padding: 0.7rem 0.4rem;
             }
             .stat-number {
                 font-size: 1.1rem;
             }
-            .chart-container {
-                height: 130px;
+            .stat-label {
+                font-size: 0.55rem;
             }
-            .glass {
-                padding: 0.8rem;
+            .navbar {
+                padding: 0.4rem 0.8rem;
+                border-radius: 60px;
             }
             .logo {
                 font-size: 1rem;
             }
+            .chart-container {
+                height: 160px;
+            }
+            .hero-banner img {
+                max-height: 100px;
+            }
+            .footer .footer-links {
+                gap: 0.6rem;
+            }
         }
-        .hidden {
-            display: none !important;
+
+        @media (max-width: 768px) and (orientation: landscape) {
+            .navbar {
+                padding: 0.3rem 1rem;
+            }
+            .hero-banner {
+                min-height: 50px;
+            }
+            .hero-banner img {
+                max-height: 100px;
+            }
+            .charts-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .charts-grid-2 {
+                grid-template-columns: 1fr 1fr;
+            }
         }
-        .mt-2 { margin-top: 1.5rem; }
-        .text-center { text-align: center; }
-        .text-muted { color: var(--gray-600); }
+
+        @media (pointer: coarse) {
+            .btn-primary,
+            .nav-links a {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            .nav-links a {
+                min-height: 40px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--purple-300);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--purple-400);
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
 
-        <!-- NAVBAR -->
+        <!-- ===== NAVBAR ===== -->
         <nav class="navbar">
             <div class="logo"><i class="fas fa-link"></i> Sarthak URL</div>
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
             <div class="nav-links" id="navLinks">
-                    <a href="/">Home</a>
+                <a href="/"><i class="fas fa-home"></i> Home</a>
                 <a href="/api"><i class="fas fa-code"></i> API</a>
-                <a href="/analytics" class="active"><i class="fas fa-chart-line"></i> Veiw Analytics</a>
+                <a href="/analytics" class="active"><i class="fas fa-chart-line"></i> View Analytics</a>
                 <a href="/privacy"><i class="fas fa-shield-alt"></i> Privacy</a>
                 <a href="/terms"><i class="fas fa-file-contract"></i> Terms</a>
                 <a href="/contact"><i class="fas fa-envelope"></i> Contact</a>
             </div>
         </nav>
 
-        <div class="glass">
-            <h1 style="font-size:1.8rem; font-weight:700; margin-bottom:0.5rem;">
-                <i class="fas fa-chart-line" style="color:var(--purple-500);"></i> 
-                <span class="gradient-text" style="background:linear-gradient(135deg, var(--purple-800), var(--purple-500)); -webkit-background-clip:text; background-clip:text; color:transparent;">Analytics</span>
-            </h1>
-            <p style="color:var(--gray-600); margin-bottom:1.5rem;">Paste your short URL or slug to view detailed statistics.</p>
-
-            <!-- Input -->
-            <div class="analytics-input-wrap">
-                <input type="text" id="slugInput" placeholder="e.g. https://sarthakurll.vercel.app/abc123 or just abc123" />
-                <button id="loadAnalyticsBtn" class="btn-primary"><i class="fas fa-search"></i> Load Analytics</button>
-            </div>
-
-            <!-- Dashboard -->
-            <div id="dashboard" class="hidden">
-                <div class="stats-grid" id="statsGrid"></div>
-
-                <div class="charts-grid">
-                    <div class="chart-box">
-                        <h3><i class="fas fa-calendar-day"></i> Last 7 Days</h3>
-                        <div class="chart-container">
-                            <canvas id="dailyChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="chart-box">
-                        <h3><i class="fas fa-globe"></i> Device Breakdown</h3>
-                        <div class="chart-container">
-                            <canvas id="deviceChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="charts-grid" style="grid-template-columns:1fr 1fr;">
-                    <div class="chart-box">
-                        <h3><i class="fas fa-browser"></i> Browsers</h3>
-                        <div class="chart-container" style="height:150px;">
-                            <canvas id="browserChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="chart-box">
-                        <h3><i class="fas fa-map-marker-alt"></i> Countries</h3>
-                        <div class="chart-container" style="height:150px;">
-                            <canvas id="countryChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recent History -->
-                <div class="chart-box" style="margin-top:1.5rem;">
-                    <h3><i class="fas fa-history"></i> Recent Clicks</h3>
-                    <div class="history-table-wrap">
-                        <table class="history-table" id="historyTable">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Device</th>
-                                    <th>Browser</th>
-                                    <th>Country</th>
-                                </tr>
-                            </thead>
-                            <tbody id="historyBody"></tbody>
-                        </table>
-                    </div>
-                    <p class="text-muted text-center" id="noHistory" style="padding:1rem 0;">No clicks yet. Share your link!</p>
-                </div>
-            </div>
-
-            <div id="loading" class="text-center" style="padding:2rem 0; display:none;">
-                <i class="fas fa-spinner fa-pulse fa-2x" style="color:var(--purple-500);"></i>
-                <p style="margin-top:0.5rem; color:var(--gray-600);">Loading analytics...</p>
-            </div>
-
-            <div id="error" class="text-center" style="padding:2rem 0; display:none; color:#b91c1c;">
-                <i class="fas fa-exclamation-circle fa-2x"></i>
-                <p style="margin-top:0.5rem;" id="errorMsg">Something went wrong.</p>
-            </div>
+        <!-- ===== HERO BANNER ===== -->
+        <div class="hero-banner">
+            <img src="/assets/banner.jpg" alt="Sarthak URL Analytics Dashboard" />
         </div>
 
+        <!-- ===== MAIN CONTENT ===== -->
+        <div class="glass">
+            <div class="glass-inner">
+                <h1 style="font-size:1.8rem; font-weight:700; margin-bottom:0.5rem;">
+                    <i class="fas fa-chart-line" style="color:var(--purple-500);"></i>
+                    <span class="gradient-text">Analytics</span>
+                </h1>
+                <p style="color:var(--gray-600); margin-bottom:1.5rem;">Paste your short URL or slug to view detailed click statistics.</p>
+
+                <!-- ===== INPUT ===== -->
+                <div class="analytics-input-wrap">
+                    <input type="text" id="slugInput" placeholder="e.g. https://sarthakurll.vercel.app/abc123 or just abc123" />
+                    <button id="loadAnalyticsBtn" class="btn-primary"><i class="fas fa-search"></i> Load Analytics</button>
+                </div>
+
+                <!-- ===== LOADING ===== -->
+                <div id="loading" class="text-center" style="padding:2rem 0; display:none;">
+                    <div class="spinner" style="margin:0 auto;"></div>
+                    <p style="margin-top:0.8rem; color:var(--gray-600);">Loading analytics...</p>
+                </div>
+
+                <!-- ===== ERROR ===== -->
+                <div id="error" class="text-center" style="padding:2rem 0; display:none; color:#b91c1c;">
+                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                    <p style="margin-top:0.5rem;" id="errorMsg">Something went wrong.</p>
+                </div>
+
+                <!-- ===== DASHBOARD ===== -->
+                <div id="dashboard" class="hidden">
+
+                    <!-- Stats -->
+                    <div class="stats-grid" id="statsGrid"></div>
+
+                    <!-- Charts: 7-Day + Device -->
+                    <div class="charts-grid">
+                        <div class="chart-box">
+                            <h3><i class="fas fa-calendar-day"></i> Last 7 Days</h3>
+                            <div class="chart-container" style="height:220px;">
+                                <canvas id="dailyChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h3><i class="fas fa-globe"></i> Device Breakdown</h3>
+                            <div class="chart-container" style="height:220px;">
+                                <canvas id="deviceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts: Browsers + Countries -->
+                    <div class="charts-grid-2">
+                        <div class="chart-box">
+                            <h3><i class="fas fa-browser"></i> Browsers</h3>
+                            <div class="chart-container" style="height:180px;">
+                                <canvas id="browserChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h3><i class="fas fa-map-marker-alt"></i> Countries</h3>
+                            <div class="chart-container" style="height:180px;">
+                                <canvas id="countryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent History -->
+                    <div class="chart-box" style="margin-top:1.5rem;">
+                        <h3><i class="fas fa-history"></i> Recent Clicks</h3>
+                        <div class="history-table-wrap">
+                            <table class="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Device</th>
+                                        <th>Browser</th>
+                                        <th>Country</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="historyBody"></tbody>
+                            </table>
+                        </div>
+                        <div id="noHistory" class="no-history">No clicks yet. Share your link!</div>
+                    </div>
+
+                </div><!-- /dashboard -->
+            </div><!-- /glass-inner -->
+        </div><!-- /glass -->
+
+        <!-- ===== FOOTER ===== -->
         <footer class="footer">
             <p>&copy; 2026 Sarthak URL. <strong>Developed by Sarthak</strong></p>
             <div class="footer-links">
@@ -600,252 +741,297 @@
                 <a href="/terms">Terms</a>
                 <a href="/contact">Contact</a>
                 <a href="/api">API Docs</a>
+                <!-- View Analytics removed from footer -->
             </div>
         </footer>
+
     </div>
 
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================================================ -->
     <script>
-        // ===== GLOBAL VARIABLES =====
-        let chartInstances = {};
-
-        // ===== DOM REFS =====
-        const slugInput = document.getElementById('slugInput');
-        const loadBtn = document.getElementById('loadAnalyticsBtn');
-        const dashboard = document.getElementById('dashboard');
-        const loading = document.getElementById('loading');
-        const errorDiv = document.getElementById('error');
-        const errorMsg = document.getElementById('errorMsg');
-        const statsGrid = document.getElementById('statsGrid');
-        const historyBody = document.getElementById('historyBody');
-        const noHistory = document.getElementById('noHistory');
-
-        // ===== NAV TOGGLE =====
-        document.getElementById('navToggle').addEventListener('click', function() {
-            const links = document.getElementById('navLinks');
-            links.classList.toggle('open');
-            this.innerHTML = links.classList.contains('open') ?
-                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-        });
-
-        // ===== EXTRACT SLUG =====
-        function extractSlug(input) {
-            input = input.trim();
-            if (!input) return null;
-            const urlPattern = /^https?:\/\/[^\/]+\/([^\/?#]+)/;
-            const match = input.match(urlPattern);
-            if (match) return match[1];
-            return input;
-        }
-
-        // ===== LOAD ANALYTICS =====
-        async function loadAnalytics() {
-            const raw = slugInput.value.trim();
-            const slug = extractSlug(raw);
-            if (!slug) {
-                alert('Please enter a valid short URL or slug.');
-                return;
-            }
-
-            loading.style.display = 'block';
-            dashboard.classList.add('hidden');
-            errorDiv.style.display = 'none';
-
-            try {
-                const response = await fetch(`/api/analytics/${slug}`);
-                if (!response.ok) {
-                    const text = await response.text();
-                    throw new Error(text || `HTTP ${response.status}`);
-                }
-                const data = await response.json();
-                console.log('Analytics data:', data);
-
-                renderStats(data);
-                renderCharts(data);
-                renderHistory(data.history || []);
-                dashboard.classList.remove('hidden');
-                loading.style.display = 'none';
-
-            } catch (err) {
-                console.error(err);
-                errorMsg.textContent = err.message || 'Failed to load analytics. Check the slug.';
-                errorDiv.style.display = 'block';
-                loading.style.display = 'none';
-                dashboard.classList.add('hidden');
-            }
-        }
-
-        // ===== RENDER STATS =====
-        function renderStats(data) {
-            const lastClick = data.lastClick ? new Date(data.lastClick).toLocaleString() : 'Never';
-            statsGrid.innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-number">${data.total}</div>
-                    <div class="stat-label">Total Clicks</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">${data.uniqueVisitors}</div>
-                    <div class="stat-label">Unique Visitors</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">${lastClick}</div>
-                    <div class="stat-label">Last Click</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">${data.history.length}</div>
-                    <div class="stat-label">Recent Clicks</div>
-                </div>
-            `;
-        }
-
-        // ===== RENDER CHARTS =====
-        function renderCharts(data) {
-            Object.values(chartInstances).forEach(chart => chart.destroy());
-            chartInstances = {};
-
-            // 7-Day Chart
-            const labels = data.chartData.map(d => d.date);
-            const values = data.chartData.map(d => d.clicks);
-            const ctxDaily = document.getElementById('dailyChart').getContext('2d');
-            chartInstances.daily = new Chart(ctxDaily, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Clicks',
-                        data: values,
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.15)',
-                        borderWidth: 3,
-                        tension: 0.3,
-                        fill: true,
-                        pointBackgroundColor: '#3b82f6',
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 2,
-                        pointRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { stepSize: 1 } }
-                    }
-                }
-            });
-
-            // Device Chart
-            const devices = data.devices || {};
-            const deviceLabels = Object.keys(devices);
-            const deviceValues = Object.values(devices);
-            const deviceColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
-            const ctxDevice = document.getElementById('deviceChart').getContext('2d');
-            chartInstances.device = new Chart(ctxDevice, {
-                type: 'pie',
-                data: {
-                    labels: deviceLabels,
-                    datasets: [{
-                        data: deviceValues,
-                        backgroundColor: deviceColors.slice(0, deviceLabels.length),
-                        borderWidth: 2,
-                        borderColor: '#ffffff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 10 } } }
-                }
-            });
-
-            // Browser Chart
-            const browsers = data.browsers || {};
-            const browserLabels = Object.keys(browsers);
-            const browserValues = Object.values(browsers);
-            const browserColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899'];
-            const ctxBrowser = document.getElementById('browserChart').getContext('2d');
-            chartInstances.browser = new Chart(ctxBrowser, {
-                type: 'bar',
-                data: {
-                    labels: browserLabels,
-                    datasets: [{
-                        data: browserValues,
-                        backgroundColor: browserColors.slice(0, browserLabels.length),
-                        borderRadius: 6,
-                        borderSkipped: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-                }
-            });
-
-            // Country Chart
-            const countries = data.countries || {};
-            const countryLabels = Object.keys(countries);
-            const countryValues = Object.values(countries);
-            const countryColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6', '#f97316'];
-            const ctxCountry = document.getElementById('countryChart').getContext('2d');
-            chartInstances.country = new Chart(ctxCountry, {
-                type: 'bar',
-                data: {
-                    labels: countryLabels,
-                    datasets: [{
-                        data: countryValues,
-                        backgroundColor: countryColors.slice(0, countryLabels.length),
-                        borderRadius: 6,
-                        borderSkipped: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-                }
-            });
-        }
-
-        // ===== RENDER HISTORY =====
-        function renderHistory(history) {
-            const tbody = historyBody;
-            tbody.innerHTML = '';
-            if (!history || history.length === 0) {
-                noHistory.style.display = 'block';
-                return;
-            }
-            noHistory.style.display = 'none';
-            history.forEach(click => {
-                const tr = document.createElement('tr');
-                const time = new Date(click.timestamp).toLocaleString();
-                tr.innerHTML = `
-                    <td>${time}</td>
-                    <td><span class="badge">${click.device || 'Unknown'}</span></td>
-                    <td><span class="badge">${click.browser || 'Unknown'}</span></td>
-                    <td>${click.country || 'Unknown'}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        // ===== EVENTS =====
-        loadBtn.addEventListener('click', loadAnalytics);
-        slugInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') loadAnalytics();
-        });
-
-        // Auto-load from URL param
         (function() {
-            const params = new URLSearchParams(window.location.search);
-            const slugParam = params.get('slug');
-            if (slugParam) {
-                slugInput.value = slugParam;
-                loadAnalytics();
+            'use strict';
+
+            // ===== DOM REFS =====
+            const slugInput = document.getElementById('slugInput');
+            const loadBtn = document.getElementById('loadAnalyticsBtn');
+            const dashboard = document.getElementById('dashboard');
+            const loading = document.getElementById('loading');
+            const errorDiv = document.getElementById('error');
+            const errorMsg = document.getElementById('errorMsg');
+            const statsGrid = document.getElementById('statsGrid');
+            const historyBody = document.getElementById('historyBody');
+            const noHistory = document.getElementById('noHistory');
+            const navToggle = document.getElementById('navToggle');
+            const navLinks = document.getElementById('navLinks');
+
+            // ===== NAV TOGGLE =====
+            navToggle.addEventListener('click', function() {
+                const isOpen = navLinks.classList.toggle('open');
+                this.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
+
+            // ===== EXTRACT SLUG =====
+            function extractSlug(input) {
+                input = input.trim();
+                if (!input) return null;
+                const urlPattern = /^https?:\/\/[^\/]+\/([^\/?#]+)/;
+                const match = input.match(urlPattern);
+                if (match) return match[1];
+                return input;
             }
+
+            // ===== CHART INSTANCES =====
+            let chartInstances = {};
+
+            // ===== RENDER STATS =====
+            function renderStats(data) {
+                const lastClick = data.lastClick ? new Date(data.lastClick).toLocaleString() : 'Never';
+                statsGrid.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-number">${data.total}</div>
+                        <div class="stat-label">Total Clicks</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${data.uniqueVisitors}</div>
+                        <div class="stat-label">Unique Visitors</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${lastClick}</div>
+                        <div class="stat-label">Last Click</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${data.history.length}</div>
+                        <div class="stat-label">Recent Clicks</div>
+                    </div>
+                `;
+            }
+
+            // ===== RENDER CHARTS =====
+            function renderCharts(data) {
+                // Destroy existing charts
+                Object.values(chartInstances).forEach(chart => chart.destroy());
+                chartInstances = {};
+
+                const isMobile = window.innerWidth < 768;
+
+                // --- 7-Day Chart ---
+                const labels = data.chartData.map(d => d.date);
+                const values = data.chartData.map(d => d.clicks);
+                const ctxDaily = document.getElementById('dailyChart').getContext('2d');
+                chartInstances.daily = new Chart(ctxDaily, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Clicks',
+                            data: values,
+                            borderColor: '#7c3aed',
+                            backgroundColor: 'rgba(124, 58, 237, 0.10)',
+                            borderWidth: 2.5,
+                            tension: 0.3,
+                            fill: true,
+                            pointBackgroundColor: '#7c3aed',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: isMobile ? 3 : 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: isMobile ? 9 : 11 } } },
+                            x: { ticks: { font: { size: isMobile ? 8 : 10 }, maxRotation: 30 } }
+                        }
+                    }
+                });
+
+                // --- Device Chart (Pie) ---
+                const devices = data.devices || {};
+                const deviceLabels = Object.keys(devices);
+                const deviceValues = Object.values(devices);
+                const deviceColors = ['#7c3aed', '#a855f7', '#c084fc', '#e9d5ff', '#3b82f6'];
+                const ctxDevice = document.getElementById('deviceChart').getContext('2d');
+                chartInstances.device = new Chart(ctxDevice, {
+                    type: 'pie',
+                    data: {
+                        labels: deviceLabels,
+                        datasets: [{
+                            data: deviceValues,
+                            backgroundColor: deviceColors.slice(0, deviceLabels.length),
+                            borderWidth: 2,
+                            borderColor: '#ffffff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { boxWidth: 12, padding: isMobile ? 6 : 12, font: { size: isMobile ? 10 : 12 } }
+                            }
+                        }
+                    }
+                });
+
+                // --- Browser Chart (Bar) ---
+                const browsers = data.browsers || {};
+                const browserLabels = Object.keys(browsers);
+                const browserValues = Object.values(browsers);
+                const browserColors = ['#7c3aed', '#a855f7', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4'];
+                const ctxBrowser = document.getElementById('browserChart').getContext('2d');
+                chartInstances.browser = new Chart(ctxBrowser, {
+                    type: 'bar',
+                    data: {
+                        labels: browserLabels,
+                        datasets: [{
+                            data: browserValues,
+                            backgroundColor: browserColors.slice(0, browserLabels.length),
+                            borderRadius: 6,
+                            borderSkipped: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: isMobile ? 9 : 11 } } },
+                            x: { ticks: { font: { size: isMobile ? 8 : 10 } } }
+                        }
+                    }
+                });
+
+                // --- Country Chart (Bar) ---
+                const countries = data.countries || {};
+                const countryLabels = Object.keys(countries);
+                const countryValues = Object.values(countries);
+                const countryColors = ['#7c3aed', '#a855f7', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#ec4899',
+                    '#14b8a6'
+                ];
+                const ctxCountry = document.getElementById('countryChart').getContext('2d');
+                chartInstances.country = new Chart(ctxCountry, {
+                    type: 'bar',
+                    data: {
+                        labels: countryLabels,
+                        datasets: [{
+                            data: countryValues,
+                            backgroundColor: countryColors.slice(0, countryLabels.length),
+                            borderRadius: 6,
+                            borderSkipped: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: isMobile ? 9 : 11 } } },
+                            x: { ticks: { font: { size: isMobile ? 7 : 10 }, maxRotation: 30 } }
+                        }
+                    }
+                });
+            }
+
+            // ===== RENDER HISTORY =====
+            function renderHistory(history) {
+                const tbody = historyBody;
+                tbody.innerHTML = '';
+                if (!history || history.length === 0) {
+                    noHistory.style.display = 'block';
+                    return;
+                }
+                noHistory.style.display = 'none';
+                history.forEach(click => {
+                    const tr = document.createElement('tr');
+                    const time = new Date(click.timestamp).toLocaleString();
+                    tr.innerHTML = `
+                        <td>${time}</td>
+                        <td><span class="badge">${click.device || 'Unknown'}</span></td>
+                        <td><span class="badge">${click.browser || 'Unknown'}</span></td>
+                        <td>${click.country || 'Unknown'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // ===== LOAD ANALYTICS =====
+            async function loadAnalytics() {
+                const raw = slugInput.value.trim();
+                const slug = extractSlug(raw);
+                if (!slug) {
+                    alert('Please enter a valid short URL or slug.');
+                    return;
+                }
+
+                loading.style.display = 'block';
+                dashboard.classList.add('hidden');
+                errorDiv.style.display = 'none';
+
+                try {
+                    const response = await fetch(`/api/analytics/${slug}`);
+                    if (!response.ok) {
+                        const text = await response.text();
+                        throw new Error(text || `HTTP ${response.status}`);
+                    }
+                    const data = await response.json();
+
+                    renderStats(data);
+                    renderCharts(data);
+                    renderHistory(data.history || []);
+                    dashboard.classList.remove('hidden');
+                    loading.style.display = 'none';
+
+                } catch (err) {
+                    console.error(err);
+                    errorMsg.textContent = err.message || 'Failed to load analytics. Check the slug.';
+                    errorDiv.style.display = 'block';
+                    loading.style.display = 'none';
+                    dashboard.classList.add('hidden');
+                }
+            }
+
+            // ===== EVENTS =====
+            loadBtn.addEventListener('click', loadAnalytics);
+            slugInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') loadAnalytics();
+            });
+
+            // ===== RESIZE HANDLER (rebuild charts on resize) =====
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    // If dashboard is visible, rebuild charts
+                    if (!dashboard.classList.contains('hidden')) {
+                        const slug = extractSlug(slugInput.value.trim());
+                        if (slug) {
+                            fetch(`/api/analytics/${slug}`)
+                                .then(r => r.json())
+                                .then(data => renderCharts(data))
+                                .catch(() => {});
+                        }
+                    }
+                }, 500);
+            });
+
+            // ===== AUTO-LOAD FROM URL PARAM =====
+            (function() {
+                const params = new URLSearchParams(window.location.search);
+                const slugParam = params.get('slug');
+                if (slugParam) {
+                    slugInput.value = slugParam;
+                    loadAnalytics();
+                }
+            })();
+
         })();
     </script>
+
 </body>
 </html>
