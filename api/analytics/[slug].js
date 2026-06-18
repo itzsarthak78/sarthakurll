@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   try {
     // Fetch all data in parallel
     const [
-      total,
+      totalClicks,
       uniqueCount,
       devices,
       browsers,
@@ -19,7 +19,8 @@ export default async function handler(req, res) {
       lastClick,
       recentClicks
     ] = await Promise.all([
-      kv.get(`analytics:total:${slug}`),
+      // FIX: total clicks is stored as 'stats:clicks', not 'analytics:total'
+      kv.get(`stats:clicks:${slug}`),
       kv.scard(`analytics:unique:${slug}`),
       kv.hgetall(`analytics:devices:${slug}`),
       kv.hgetall(`analytics:browsers:${slug}`),
@@ -28,13 +29,14 @@ export default async function handler(req, res) {
       kv.lrange(`analytics:recent:${slug}`, 0, 49)
     ]);
 
-    // Parse recent clicks
-    const history = recentClicks.map(item => {
-      try { return JSON.parse(item); } catch { return null; }
-    }).filter(Boolean);
+    // Parse recent clicks (they are stored as JSON strings)
+    const history = recentClicks
+      .map(item => {
+        try { return JSON.parse(item); } catch { return null; }
+      })
+      .filter(Boolean);
 
-    // Build 7-day click chart data (optional: we can compute from history)
-    // For simplicity, we'll generate daily counts from the last 7 days
+    // Build 7-day chart data (from history)
     const now = new Date();
     const sevenDaysAgo = new Date(now);
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
@@ -45,16 +47,11 @@ export default async function handler(req, res) {
       const key = d.toISOString().split('T')[0];
       dailyData[key] = 0;
     }
-
-    // Count clicks per day from history
     history.forEach(click => {
       const date = new Date(click.timestamp);
       const key = date.toISOString().split('T')[0];
-      if (dailyData.hasOwnProperty(key)) {
-        dailyData[key] += 1;
-      }
+      if (dailyData.hasOwnProperty(key)) dailyData[key] += 1;
     });
-
     const chartData = Object.keys(dailyData).map(key => ({
       date: key,
       clicks: dailyData[key]
@@ -62,7 +59,7 @@ export default async function handler(req, res) {
 
     res.status(200).json({
       slug,
-      total: parseInt(total || 0, 10),
+      total: parseInt(totalClicks || 0, 10),
       uniqueVisitors: uniqueCount || 0,
       lastClick: lastClick || null,
       devices: devices || {},
