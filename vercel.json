@@ -4,6 +4,8 @@
     { "source": "/api", "destination": "/api.html" },
     { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/terms", "destination": "/terms.html" },
-    { "source": "/contact", "destination": "/contact.html" }
+    { "source": "/contact", "destination": "/contact.html" },
+
+    { "source": "/:slug", "destination": "/api/:slug" }
   ]
 }
