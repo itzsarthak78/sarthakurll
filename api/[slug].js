@@ -1,18 +1,21 @@
 import { kv } from '@vercel/kv';
 
-function parseUA(userAgent) {
-  const ua = userAgent || '';
+function parseUA(userAgent = '') {
   let device = 'Desktop';
   let browser = 'Other';
 
-  if (/mobile|android|iphone|ipad|ipod/i.test(ua)) {
+  if (/mobile|android|iphone|ipad|ipod/i.test(userAgent)) {
     device = 'Mobile';
   }
 
-  if (/chrome/i.test(ua) && !/edge|opr/i.test(ua)) browser = 'Chrome';
-  else if (/firefox/i.test(ua)) browser = 'Firefox';
-  else if (/safari/i.test(ua) && !/chrome/i.test(ua)) browser = 'Safari';
-  else if (/edge/i.test(ua)) browser = 'Edge';
+  if (/chrome/i.test(userAgent) && !/edge|opr/i.test(userAgent))
+    browser = 'Chrome';
+  else if (/firefox/i.test(userAgent))
+    browser = 'Firefox';
+  else if (/safari/i.test(userAgent) && !/chrome/i.test(userAgent))
+    browser = 'Safari';
+  else if (/edge/i.test(userAgent))
+    browser = 'Edge';
 
   return { device, browser };
 }
@@ -20,7 +23,7 @@ function parseUA(userAgent) {
 export default async function handler(req, res) {
   const { slug } = req.query;
 
-  if (!slug) {
+  if (!slug || typeof slug !== 'string') {
     return res.status(404).send('Not found');
   }
 
@@ -32,6 +35,7 @@ export default async function handler(req, res) {
 
   try {
     const timestamp = new Date().toISOString();
+
     const ip =
       req.headers['x-forwarded-for'] ||
       req.socket?.remoteAddress ||
@@ -51,21 +55,21 @@ export default async function handler(req, res) {
     // Unique visitors
     await kv.sadd(`analytics:unique:${slug}`, ip);
 
-    // Devices
+    // Device stats
     await kv.hincrby(
       `analytics:devices:${slug}`,
       device,
       1
     );
 
-    // Browsers
+    // Browser stats
     await kv.hincrby(
       `analytics:browsers:${slug}`,
       browser,
       1
     );
 
-    // Countries
+    // Country stats
     await kv.hincrby(
       `analytics:countries:${slug}`,
       country,
@@ -78,8 +82,8 @@ export default async function handler(req, res) {
       timestamp
     );
 
-    // Recent history
-    const clickRecord = JSON.stringify({
+    // Recent click history
+    const clickData = JSON.stringify({
       timestamp,
       device,
       browser,
@@ -88,7 +92,7 @@ export default async function handler(req, res) {
 
     await kv.lpush(
       `analytics:recent:${slug}`,
-      clickRecord
+      clickData
     );
 
     await kv.ltrim(
@@ -97,8 +101,23 @@ export default async function handler(req, res) {
       49
     );
 
+    // Debug
+    const recentTest = await kv.lrange(
+      `analytics:recent:${slug}`,
+      0,
+      5
+    );
+
+    console.log(
+      'RECENT TEST:',
+      recentTest
+    );
+
   } catch (error) {
-    console.error('ANALYTICS ERROR:', error);
+    console.error(
+      'ANALYTICS ERROR:',
+      error
+    );
   }
 
   return res.redirect(302, originalUrl);
