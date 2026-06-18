@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <style>
-        /* Same base styles as api.html – just use same */
+        /* ===== SAME BASE STYLES ===== */
         *,
         *::before,
         *::after {
@@ -275,6 +275,8 @@
             .nav-links a {
                 padding: 0.5rem 0.8rem;
                 border-radius: var(--radius-sm);
+                text-align: left;  /* LEFT ALIGN for mobile */
+                width: 100%;
             }
             .logo {
                 font-size: 1.2rem;
@@ -370,7 +372,7 @@
         </nav>
 
         <!-- HERO BANNER -->
-        <div class="hero-banner glass">
+        <div class="hero-banner">
             <img src="/assets/banner.jpg" alt="Sarthak URL Privacy Policy" />
         </div>
 
@@ -423,6 +425,7 @@
                 <a href="/terms">Terms</a>
                 <a href="/contact">Contact</a>
                 <a href="/api">API Docs</a>
+                <!-- View Analytics removed from footer -->
             </div>
         </footer>
 
