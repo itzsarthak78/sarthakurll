@@ -151,6 +151,47 @@
         .nav-toggle:hover {
             color: var(--purple-700);
         }
+        .hero-banner {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #f5eeff, #ede6ff, #faf5ff);
+            border: 1px solid rgba(192, 132, 252, 0.15);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            max-height: 220px;
+            min-height: 60px;
+        }
+        .footer {
+            margin-top: 2.5rem;
+            padding: 1.2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--gray-200);
+            color: var(--gray-600);
+            font-size: 0.8rem;
+        }
+        .footer a {
+            color: var(--purple-700);
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.4rem;
+        }
 
         /* Analytics Input */
         .analytics-input-wrap {
@@ -280,6 +321,7 @@
             padding: 1.2rem;
             border: 1px solid var(--gray-200);
             box-shadow: var(--shadow-sm);
+            min-width: 0;
         }
         .chart-box h3 {
             font-size: 1rem;
@@ -296,6 +338,8 @@
         .chart-container {
             position: relative;
             height: 200px;
+            width: 100%;
+            max-width: 100%;
         }
         .history-table-wrap {
             overflow-x: auto;
@@ -333,34 +377,11 @@
             font-weight: 500;
         }
 
-        /* Footer */
-        .footer {
-            margin-top: 2.5rem;
-            padding: 1.2rem 0;
-            text-align: center;
-            border-top: 1px solid var(--gray-200);
-            color: var(--gray-600);
-            font-size: 0.8rem;
-        }
-        .footer a {
-            color: var(--purple-700);
-            text-decoration: none;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        .footer .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            margin-top: 0.4rem;
-        }
-
-        /* Responsive */
+        /* Mobile Responsive */
         @media (max-width: 768px) {
             .charts-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -390,6 +411,29 @@
                 padding: 0.6rem 0.8rem;
                 border-radius: var(--radius-sm);
             }
+            .chart-container {
+                height: 160px;
+            }
+            .glass {
+                padding: 1rem;
+                border-radius: var(--radius-md);
+            }
+            .hero-banner {
+                min-height: 60px;
+                border-radius: var(--radius-md);
+            }
+            .hero-banner img {
+                max-height: 140px;
+                min-height: 50px;
+            }
+            .footer {
+                font-size: 0.7rem;
+                padding: 1rem 0;
+                margin-top: 1.5rem;
+            }
+            .footer .footer-links {
+                gap: 1rem;
+            }
         }
         @media (max-width: 420px) {
             .stats-grid {
@@ -398,6 +442,9 @@
             .analytics-input-wrap input {
                 min-width: 100%;
             }
+            .chart-container {
+                height: 140px;
+            }
         }
         .hidden {
             display: none !important;
@@ -405,8 +452,19 @@
         .mt-2 { margin-top: 1.5rem; }
         .text-center { text-align: center; }
         .text-muted { color: var(--gray-600); }
+        .flex { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
         .gap-2 { gap: 0.8rem; }
-        .flex { display: flex; align-items: center; }
+
+        /* Colourful chart palettes */
+        .color-palette {
+            --color-1: #3b82f6;
+            --color-2: #10b981;
+            --color-3: #f59e0b;
+            --color-4: #ef4444;
+            --color-5: #8b5cf6;
+            --color-6: #06b6d4;
+            --color-7: #ec4899;
+        }
     </style>
 </head>
 <body>
@@ -420,10 +478,10 @@
             <div class="nav-links" id="navLinks">
                 <a href="/">Home</a>
                 <a href="/api">API</a>
+                <a href="/analytics" class="active"><i class="fas fa-chart-line"></i> View Analytics</a>
                 <a href="/privacy">Privacy</a>
                 <a href="/terms">Terms</a>
                 <a href="/contact">Contact</a>
-                <a href="/analytics" class="active"><i class="fas fa-chart-line"></i> Analytics</a>
             </div>
         </nav>
 
@@ -490,7 +548,7 @@
                             <tbody id="historyBody"></tbody>
                         </table>
                     </div>
-                    <p class="text-muted text-center" id="noHistory" style="padding:1rem 0;">No clicks yet</p>
+                    <p class="text-muted text-center" id="noHistory" style="padding:1rem 0;">No clicks yet. Share your link!</p>
                 </div>
             </div>
 
@@ -512,7 +570,7 @@
                 <a href="/terms">Terms</a>
                 <a href="/contact">Contact</a>
                 <a href="/api">API Docs</a>
-             </div>
+            </div>
         </footer>
     </div>
 
@@ -539,15 +597,13 @@
                 '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
         });
 
-        // ===== EXTRACT SLUG FROM URL =====
+        // ===== EXTRACT SLUG =====
         function extractSlug(input) {
             input = input.trim();
             if (!input) return null;
-            // If it's a full URL, extract the last part
             const urlPattern = /^https?:\/\/[^\/]+\/([^\/?#]+)/;
             const match = input.match(urlPattern);
             if (match) return match[1];
-            // Otherwise assume it's already a slug
             return input;
         }
 
@@ -560,7 +616,6 @@
                 return;
             }
 
-            // Show loading, hide dashboard/error
             loading.style.display = 'block';
             dashboard.classList.add('hidden');
             errorDiv.style.display = 'none';
@@ -572,8 +627,8 @@
                     throw new Error(text || `HTTP ${response.status}`);
                 }
                 const data = await response.json();
+                console.log('Analytics data:', data); // debug
 
-                // Populate dashboard
                 renderStats(data);
                 renderCharts(data);
                 renderHistory(data.history || []);
@@ -607,18 +662,18 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-number">${data.history.length}</div>
-                    <div class="stat-label">Recent Clicks (last 50)</div>
+                    <div class="stat-label">Recent Clicks</div>
                 </div>
             `;
         }
 
-        // ===== RENDER CHARTS =====
+        // ===== RENDER CHARTS (colourful) =====
         function renderCharts(data) {
             // Destroy existing charts
             Object.values(chartInstances).forEach(chart => chart.destroy());
             chartInstances = {};
 
-            // 7-Day Chart
+            // --- 7-Day Chart (Line) ---
             const labels = data.chartData.map(d => d.date);
             const values = data.chartData.map(d => d.clicks);
             const ctxDaily = document.getElementById('dailyChart').getContext('2d');
@@ -629,12 +684,15 @@
                     datasets: [{
                         label: 'Clicks',
                         data: values,
-                        borderColor: '#a855f7',
-                        backgroundColor: 'rgba(168, 85, 247, 0.1)',
-                        borderWidth: 2,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                        borderWidth: 3,
                         tension: 0.3,
                         fill: true,
-                        pointBackgroundColor: '#a855f7'
+                        pointBackgroundColor: '#3b82f6',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
                     }]
                 },
                 options: {
@@ -647,10 +705,11 @@
                 }
             });
 
-            // Device Chart (Pie)
+            // --- Device Chart (Pie) – multi colour ---
             const devices = data.devices || {};
             const deviceLabels = Object.keys(devices);
             const deviceValues = Object.values(devices);
+            const deviceColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
             const ctxDevice = document.getElementById('deviceChart').getContext('2d');
             chartInstances.device = new Chart(ctxDevice, {
                 type: 'pie',
@@ -658,21 +717,23 @@
                     labels: deviceLabels,
                     datasets: [{
                         data: deviceValues,
-                        backgroundColor: ['#a855f7', '#c084fc', '#e9d5ff'],
-                        borderWidth: 0
+                        backgroundColor: deviceColors.slice(0, deviceLabels.length),
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom' } }
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 10 } } }
                 }
             });
 
-            // Browser Chart (Bar)
+            // --- Browser Chart (Bar) – multi colour ---
             const browsers = data.browsers || {};
             const browserLabels = Object.keys(browsers);
             const browserValues = Object.values(browsers);
+            const browserColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899'];
             const ctxBrowser = document.getElementById('browserChart').getContext('2d');
             chartInstances.browser = new Chart(ctxBrowser, {
                 type: 'bar',
@@ -680,8 +741,9 @@
                     labels: browserLabels,
                     datasets: [{
                         data: browserValues,
-                        backgroundColor: '#c084fc',
-                        borderRadius: 6
+                        backgroundColor: browserColors.slice(0, browserLabels.length),
+                        borderRadius: 6,
+                        borderSkipped: false
                     }]
                 },
                 options: {
@@ -692,10 +754,11 @@
                 }
             });
 
-            // Country Chart (Bar)
+            // --- Country Chart (Bar) – multi colour ---
             const countries = data.countries || {};
             const countryLabels = Object.keys(countries);
             const countryValues = Object.values(countries);
+            const countryColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6', '#f97316'];
             const ctxCountry = document.getElementById('countryChart').getContext('2d');
             chartInstances.country = new Chart(ctxCountry, {
                 type: 'bar',
@@ -703,8 +766,9 @@
                     labels: countryLabels,
                     datasets: [{
                         data: countryValues,
-                        backgroundColor: '#a855f7',
-                        borderRadius: 6
+                        backgroundColor: countryColors.slice(0, countryLabels.length),
+                        borderRadius: 6,
+                        borderSkipped: false
                     }]
                 },
                 options: {
@@ -744,7 +808,7 @@
             if (e.key === 'Enter') loadAnalytics();
         });
 
-        // Check if URL has ?slug=xxx on load
+        // Check URL param ?slug=xxx
         (function() {
             const params = new URLSearchParams(window.location.search);
             const slugParam = params.get('slug');
@@ -753,14 +817,6 @@
                 loadAnalytics();
             }
         })();
-
-        // ===== UPDATE NAVBAR ACTIVE =====
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === '/analytics') {
-                link.classList.add('active');
-            }
-        });
     </script>
 </body>
 </html>
