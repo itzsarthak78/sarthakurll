@@ -1,19 +1,14 @@
 import { kv } from '@vercel/kv';
 
-// ----------------------------------------------
-// Simple user‑agent parser
-// ----------------------------------------------
 function parseUA(userAgent) {
   const ua = userAgent || '';
   let device = 'Desktop';
   let browser = 'Other';
 
-  // Device detection
   if (/mobile|android|iphone|ipad|ipod|blackberry|windows phone/i.test(ua)) {
     device = 'Mobile';
   }
 
-  // Browser detection
   if (/chrome/i.test(ua) && !/edge|opr|brave/i.test(ua)) browser = 'Chrome';
   else if (/firefox/i.test(ua)) browser = 'Firefox';
   else if (/safari/i.test(ua) && !/chrome/i.test(ua)) browser = 'Safari';
@@ -24,9 +19,6 @@ function parseUA(userAgent) {
   return { device, browser };
 }
 
-// ----------------------------------------------
-// Main handler
-// ----------------------------------------------
 export default async function handler(req, res) {
   const { slug } = req.query;
 
@@ -34,19 +26,16 @@ export default async function handler(req, res) {
     return res.status(404).send('Not found');
   }
 
-  // ----- DO NOT MODIFY: Lookup + redirect -----
+  // 1. Lookup original URL
   const originalUrl = await kv.get(`short:${slug}`);
-
   if (!originalUrl) {
     return res.status(404).send('Link not found');
   }
 
-  // Increment total clicks (keep existing)
+  // 2. Increment total clicks (kept as before)
   await kv.incr(`stats:clicks:${slug}`);
 
-  // --------------------------------------------
-  // ANALYTICS TRACKING (wrapped in try/catch)
-  // --------------------------------------------
+  // 3. ANALYTICS TRACKING (with error handling)
   try {
     const timestamp = new Date().toISOString();
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
@@ -55,31 +44,29 @@ export default async function handler(req, res) {
 
     const { device, browser } = parseUA(userAgent);
 
-    // 1. Unique visitors (set of IPs)
+    // Store unique visitor (IP set)
     await kv.sadd(`analytics:unique:${slug}`, ip);
 
-    // 2. Device breakdown
+    // Device, browser, country counts
     await kv.hincrby(`analytics:devices:${slug}`, device, 1);
-
-    // 3. Browser breakdown
     await kv.hincrby(`analytics:browsers:${slug}`, browser, 1);
-
-    // 4. Country breakdown
     await kv.hincrby(`analytics:countries:${slug}`, country, 1);
 
-    // 5. Last click timestamp
+    // Last click timestamp
     await kv.set(`analytics:last_click:${slug}`, timestamp);
 
-    // 6. Recent click history (keep last 50)
+    // Recent click history (last 50)
     const clickRecord = JSON.stringify({ timestamp, device, browser, country, ip });
     await kv.lpush(`analytics:recent:${slug}`, clickRecord);
     await kv.ltrim(`analytics:recent:${slug}`, 0, 49);
 
+    console.log(`✅ Analytics saved for ${slug}`);
+
   } catch (error) {
-    // Log error but NEVER block the redirect
-    console.error('Analytics error:', error);
+    console.error('❌ Analytics error:', error);
+    // Never block redirect
   }
 
-  // ----- DO NOT MODIFY: Redirect -----
+  // 4. Redirect
   return res.redirect(302, originalUrl);
 }
