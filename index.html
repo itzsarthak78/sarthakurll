@@ -29,7 +29,7 @@
     <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
     <meta name="theme-color" content="#c026d3" />
 
-    <!-- ===== SCHEMA 1: WebApplication (with potentialAction) ===== -->
+    <!-- ===== SCHEMA 1: WebApplication ===== -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -96,9 +96,6 @@
 
     <style>
         /* ===== YOUR EXISTING CSS – kept exactly as is ===== */
-        /* I’m including a placeholder – you should paste your full CSS here */
-        /* (all your variable, glass, navbar, shortener, etc. styles) */
-
         *,
         *::before,
         *::after {
@@ -300,7 +297,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 2rem 1.5rem;
+            padding: 2rem 1.5rem 0 1.5rem;
             text-align: center;
         }
         .hero-banner h1 {
@@ -321,6 +318,7 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+            margin-bottom: 1rem;
         }
         .hero-banner img {
             width: 100%;
@@ -329,6 +327,8 @@
             object-fit: cover;
             max-height: 280px;
             min-height: 80px;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            margin-top: auto;
         }
         .main-grid {
             display: grid;
@@ -912,6 +912,7 @@
                 min-height: 70px;
                 border-radius: var(--radius-md);
                 margin-bottom: 1.2rem;
+                padding: 1.2rem 1.2rem 0 1.2rem;
             }
             .hero-banner img {
                 max-height: 160px;
@@ -1172,12 +1173,11 @@
             </div>
         </nav>
 
-        <!-- ===== HERO BANNER (with H1 & keyword) ===== -->
+        <!-- ===== HERO BANNER (with H1, text, and image) ===== -->
         <div class="hero-banner glass">
             <h1>Sarthak URL Shortener – The Best Free Link Shortener</h1>
             <p>Shorten, brand, and track your links with custom aliases, QR codes, and real‑time analytics – all for free.</p>
-            <!-- You can keep your banner image here if you want -->
-            <!-- <img src="/assets/banner.jpg" alt="Sarthak URL Shortener dashboard" /> -->
+            <img src="/assets/banner.jpg" alt="Sarthak URL Shortener – free URL shortener dashboard with analytics" loading="lazy" />
         </div>
 
         <!-- ===== MAIN GRID ===== -->
@@ -1237,7 +1237,6 @@
                     <li><i class="fas fa-code"></i> <strong>Developer API</strong> – Integrate with ease</li>
                     <li><i class="fas fa-shield-alt"></i> <strong>Secure &amp; fast</strong> – Enterprise-grade</li>
                 </ul>
-                <!-- Read more link -->
                 <p style="margin-top:0.5rem; font-size:0.85rem;"><a href="/analytics" style="color:var(--purple-700); text-decoration:none; font-weight:500;">Learn more about our analytics →</a></p>
 
                 <div class="stats-row">
@@ -1272,7 +1271,7 @@
 
         </div>
 
-        <!-- ===== FOOTER (branded) ===== -->
+        <!-- ===== FOOTER ===== -->
         <footer class="footer">
             <p>&copy; 2026 <a href="/" style="color:var(--purple-700); text-decoration:none;"><strong>Sarthak URL Shortener</strong></a> – Free URL Shortener &amp; Analytics. Developed by Sarthak</p>
             <div class="footer-links">
