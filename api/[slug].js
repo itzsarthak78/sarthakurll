@@ -26,16 +26,16 @@ export default async function handler(req, res) {
     return res.status(404).send('Not found');
   }
 
-  // 1. Lookup original URL
+  // ----- LOOKUP & REDIRECT (unchanged) -----
   const originalUrl = await kv.get(`short:${slug}`);
   if (!originalUrl) {
     return res.status(404).send('Link not found');
   }
 
-  // 2. Increment total clicks (kept as before)
+  // Increment total clicks (keep existing)
   await kv.incr(`stats:clicks:${slug}`);
 
-  // 3. ANALYTICS TRACKING (with error handling)
+  // ----- ANALYTICS TRACKING (WILL NOT BREAK REDIRECT) -----
   try {
     const timestamp = new Date().toISOString();
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
@@ -44,18 +44,22 @@ export default async function handler(req, res) {
 
     const { device, browser } = parseUA(userAgent);
 
-    // Store unique visitor (IP set)
+    // 1. Unique visitors (IP set)
     await kv.sadd(`analytics:unique:${slug}`, ip);
 
-    // Device, browser, country counts
+    // 2. Device breakdown
     await kv.hincrby(`analytics:devices:${slug}`, device, 1);
+
+    // 3. Browser breakdown
     await kv.hincrby(`analytics:browsers:${slug}`, browser, 1);
+
+    // 4. Country breakdown
     await kv.hincrby(`analytics:countries:${slug}`, country, 1);
 
-    // Last click timestamp
+    // 5. Last click timestamp
     await kv.set(`analytics:last_click:${slug}`, timestamp);
 
-    // Recent click history (last 50)
+    // 6. Recent click history (keep last 50)
     const clickRecord = JSON.stringify({ timestamp, device, browser, country, ip });
     await kv.lpush(`analytics:recent:${slug}`, clickRecord);
     await kv.ltrim(`analytics:recent:${slug}`, 0, 49);
@@ -67,6 +71,6 @@ export default async function handler(req, res) {
     // Never block redirect
   }
 
-  // 4. Redirect
+  // ----- REDIRECT (always happens) -----
   return res.redirect(302, originalUrl);
 }
