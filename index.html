@@ -26,7 +26,7 @@
     <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
     <meta name="theme-color" content="#c026d3" />
 
-    <!-- JSON-LD Structured Data for Sarthak URL -->
+    <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -501,7 +501,6 @@
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            margin-top: 0.4rem;
             flex-wrap: wrap;
         }
         .analytics-row .btn-analytics {
@@ -1149,12 +1148,14 @@
                                 <button id="openShortBtn"><i class="fas fa-external-link-alt"></i></button>
                             </div>
                         </div>
-                        <!-- Analytics button row -->
+
+                        <!-- 🔥 ANALYTICS BUTTON -->
                         <div class="analytics-row" id="analyticsRow">
                             <a id="analyticsLink" class="btn-analytics" target="_blank" style="display:none;">
                                 <i class="fas fa-chart-line"></i> View Analytics
                             </a>
                         </div>
+
                         <div class="qr-section">
                             <span class="qr-label"><i class="fas fa-qrcode"></i> QR Code</span>
                             <div class="qr-wrapper">
@@ -1361,7 +1362,7 @@
                         totalApiCalls += 1;
                         updateStatsUI();
 
-                        // Show analytics button
+                        // 🔥 Show analytics button
                         const slug = result.short.split('/').pop();
                         analyticsLink.href = `/analytics?slug=${slug}`;
                         analyticsLink.style.display = 'inline-flex';
