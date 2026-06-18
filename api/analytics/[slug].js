@@ -1,4 +1,3 @@
-// api/analytics/[slug].js
 import { kv } from '@vercel/kv';
 
 export default async function handler(req, res) {
@@ -9,7 +8,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Fetch all data in parallel
     const [
       totalClicks,
       uniqueCount,
@@ -19,7 +17,6 @@ export default async function handler(req, res) {
       lastClick,
       recentClicks
     ] = await Promise.all([
-      // FIX: total clicks is stored as 'stats:clicks', not 'analytics:total'
       kv.get(`stats:clicks:${slug}`),
       kv.scard(`analytics:unique:${slug}`),
       kv.hgetall(`analytics:devices:${slug}`),
@@ -29,48 +26,67 @@ export default async function handler(req, res) {
       kv.lrange(`analytics:recent:${slug}`, 0, 49)
     ]);
 
-    // Parse recent clicks (they are stored as JSON strings)
-    const history = recentClicks
+    console.log('RECENT CLICKS RAW:', recentClicks);
+
+    const history = (recentClicks || [])
       .map(item => {
-        try { return JSON.parse(item); } catch { return null; }
+        try {
+          return typeof item === 'string'
+            ? JSON.parse(item)
+            : item;
+        } catch (e) {
+          console.error('Parse error:', e);
+          return null;
+        }
       })
       .filter(Boolean);
 
-    // Build 7-day chart data (from history)
     const now = new Date();
-    const sevenDaysAgo = new Date(now);
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
     const dailyData = {};
-    for (let i = 0; i < 7; i++) {
-      const d = new Date(sevenDaysAgo);
-      d.setDate(d.getDate() + i);
+
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(now.getDate() - i);
       const key = d.toISOString().split('T')[0];
       dailyData[key] = 0;
     }
-    history.forEach(click => {
-      const date = new Date(click.timestamp);
-      const key = date.toISOString().split('T')[0];
-      if (dailyData.hasOwnProperty(key)) dailyData[key] += 1;
-    });
-    const chartData = Object.keys(dailyData).map(key => ({
-      date: key,
-      clicks: dailyData[key]
-    }));
 
-    res.status(200).json({
+    history.forEach(click => {
+      if (!click.timestamp) return;
+
+      const key = new Date(click.timestamp)
+        .toISOString()
+        .split('T')[0];
+
+      if (dailyData[key] !== undefined) {
+        dailyData[key]++;
+      }
+    });
+
+    const chartData = Object.entries(dailyData).map(
+      ([date, clicks]) => ({
+        date,
+        clicks
+      })
+    );
+
+    return res.status(200).json({
       slug,
-      total: parseInt(totalClicks || 0, 10),
-      uniqueVisitors: uniqueCount || 0,
+      total: Number(totalClicks || 0),
+      uniqueVisitors: Number(uniqueCount || 0),
       lastClick: lastClick || null,
       devices: devices || {},
       browsers: browsers || {},
       countries: countries || {},
-      history: history.slice(0, 20), // last 20 for table
+      history: history.slice(0, 20),
       chartData
     });
 
   } catch (error) {
     console.error('Analytics API error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+
+    return res.status(500).json({
+      error: 'Internal server error'
+    });
   }
 }
