@@ -7,33 +7,36 @@
     <!-- Google Site Verification -->
     <meta name="google-site-verification" content="2UFijFK-Fb4U8Hw9hti7d-TyD5-i1LtauXgdXcuMGl0" />
     
-    <!-- SEO Title & Description -->
-    <title>Sarthak URL – Free URL Shortener & Custom Link Manager</title>
-    <meta name="description" content="Shorten long URLs, create custom aliases, generate QR codes, and track analytics with Sarthak URL – the smart, free URL shortener. Start shortening now." />
-    <meta name="keywords" content="Sarthak URL, URL shortener, free link shortener, custom aliases, QR code generator, link analytics, short links, branded links" />
+    <!-- ===== PRIMARY SEO TITLE (includes exact keyword) ===== -->
+    <title>Sarthak URL Shortener – Free Link Shortener with Custom Aliases & Analytics</title>
+    <meta name="description" content="Sarthak URL Shortener is the best free tool to shorten long URLs, create custom aliases, generate QR codes, and track click analytics. Start shortening now." />
+    <meta name="keywords" content="Sarthak URL Shortener, Sarthak URL, free URL shortener, link analytics tool, custom aliases, QR code generator, short links, branded links" />
     <link rel="canonical" href="https://sarthakurll.vercel.app/" />
     
     <!-- Open Graph -->
-    <meta property="og:title" content="Sarthak URL – Free URL Shortener & Custom Link Manager" />
-    <meta property="og:description" content="Shorten, customize, and track your links with Sarthak URL. Free QR codes, custom aliases, and developer API." />
+    <meta property="og:title" content="Sarthak URL Shortener – Free Link Shortener & Analytics" />
+    <meta property="og:description" content="Shorten, brand, and track your links with Sarthak URL Shortener – free custom aliases, QR codes, and powerful analytics." />
     <meta property="og:image" content="https://sarthakurll.vercel.app/assets/banner.jpg" />
     <meta property="og:url" content="https://sarthakurll.vercel.app/" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Sarthak URL Shortener" />
+    <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Sarthak URL – Free URL Shortener" />
-    <meta name="twitter:description" content="Shorten, customize, and track your links. Free QR codes, custom aliases, and developer API." />
+    <meta name="twitter:title" content="Sarthak URL Shortener – Free Link Shortener" />
+    <meta name="twitter:description" content="Shorten, customize, and track your links with Sarthak URL Shortener. Free QR codes, custom aliases, and API." />
+    <meta name="twitter:site" content="@SarthakURL" />
     
     <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
     <meta name="theme-color" content="#c026d3" />
 
-    <!-- JSON-LD Structured Data -->
+    <!-- ===== SCHEMA 1: WebApplication (with potentialAction) ===== -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "Sarthak URL",
+      "name": "Sarthak URL Shortener",
       "url": "https://sarthakurll.vercel.app/",
-      "description": "Shorten long URLs, create custom aliases, generate QR codes, and track analytics. Free and developer-friendly.",
+      "description": "Free URL shortener with custom aliases, QR codes, and link analytics.",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "All",
       "browserRequirements": "Modern browser",
@@ -55,6 +58,36 @@
     }
     </script>
 
+    <!-- ===== SCHEMA 2: Organization ===== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Sarthak URL Shortener",
+      "url": "https://sarthakurll.vercel.app/",
+      "logo": "https://sarthakurll.vercel.app/assets/favicon.ico",
+      "email": "NotUrDaquavis@gmail.com",
+      "description": "Best free URL shortener with custom aliases and analytics."
+    }
+    </script>
+
+    <!-- ===== SCHEMA 3: Breadcrumb ===== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://sarthakurll.vercel.app/"
+        }
+      ]
+    }
+    </script>
+
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
@@ -62,7 +95,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
-        /* ===== RESET & VARIABLES ===== */
+        /* ===== YOUR EXISTING CSS – kept exactly as is ===== */
+        /* I’m including a placeholder – you should paste your full CSS here */
+        /* (all your variable, glass, navbar, shortener, etc. styles) */
+
         *,
         *::before,
         *::after {
@@ -261,8 +297,30 @@
             position: relative;
             min-height: 120px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+        .hero-banner h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 700;
+            font-style: italic;
+            background: linear-gradient(135deg, var(--purple-800), var(--purple-500));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+        .hero-banner p {
+            color: var(--gray-600);
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .hero-banner img {
             width: 100%;
@@ -271,7 +329,6 @@
             object-fit: cover;
             max-height: 280px;
             min-height: 80px;
-            alt: "Sarthak URL – Free URL Shortener"
         }
         .main-grid {
             display: grid;
@@ -1101,7 +1158,7 @@
 
     <div class="app-container">
 
-        <!-- NAVBAR -->
+        <!-- ===== NAVBAR ===== -->
         <nav class="navbar">
             <div class="logo"><i class="fas fa-link"></i> Sarthak URL</div>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
@@ -1115,12 +1172,15 @@
             </div>
         </nav>
 
-        <!-- HERO BANNER -->
+        <!-- ===== HERO BANNER (with H1 & keyword) ===== -->
         <div class="hero-banner glass">
-            <img src="/assets/banner.jpg" alt="Sarthak URL – Free URL Shortener" />
+            <h1>Sarthak URL Shortener – The Best Free Link Shortener</h1>
+            <p>Shorten, brand, and track your links with custom aliases, QR codes, and real‑time analytics – all for free.</p>
+            <!-- You can keep your banner image here if you want -->
+            <!-- <img src="/assets/banner.jpg" alt="Sarthak URL Shortener dashboard" /> -->
         </div>
 
-        <!-- MAIN GRID -->
+        <!-- ===== MAIN GRID ===== -->
         <div class="main-grid">
 
             <!-- LEFT: Shortener -->
@@ -1149,7 +1209,7 @@
                             </div>
                         </div>
 
-                        <!-- 🔥 ANALYTICS BUTTON -->
+                        <!-- Analytics button -->
                         <div class="analytics-row" id="analyticsRow">
                             <a id="analyticsLink" class="btn-analytics" target="_blank" style="display:none;">
                                 <i class="fas fa-chart-line"></i> View Analytics
@@ -1169,19 +1229,23 @@
 
             <!-- RIGHT: Sidebar -->
             <div class="glass sidebar-card">
-                <h3><i class="fas fa-star"></i> Why Sarthak?</h3>
+                <h3><i class="fas fa-star"></i> Why Choose Sarthak URL Shortener?</h3>
                 <ul class="feature-list">
-                    <li><i class="fas fa-link"></i> <strong>Custom aliases</strong> – Brand your links</li>
+                    <li><i class="fas fa-link"></i> <strong>Custom aliases</strong> – Create branded short links</li>
                     <li><i class="fas fa-qrcode"></i> <strong>QR Codes</strong> – Generate instantly</li>
-                    <li><i class="fas fa-chart-line"></i> <strong>Analytics</strong> – Track clicks in real-time</li>
+                    <li><i class="fas fa-chart-line"></i> <strong>Link Analytics</strong> – Track clicks in real-time</li>
                     <li><i class="fas fa-code"></i> <strong>Developer API</strong> – Integrate with ease</li>
                     <li><i class="fas fa-shield-alt"></i> <strong>Secure &amp; fast</strong> – Enterprise-grade</li>
                 </ul>
+                <!-- Read more link -->
+                <p style="margin-top:0.5rem; font-size:0.85rem;"><a href="/analytics" style="color:var(--purple-700); text-decoration:none; font-weight:500;">Learn more about our analytics →</a></p>
+
                 <div class="stats-row">
                     <div class="stat-card"><div class="stat-number" id="totalLinksStat">1,247</div><div class="stat-label">Links</div></div>
                     <div class="stat-card"><div class="stat-number" id="apiCallsStat">8.9k</div><div class="stat-label">API Calls</div></div>
                     <div class="stat-card"><div class="stat-number">125k</div><div class="stat-label">Clicks</div></div>
                 </div>
+
                 <div class="api-key-card">
                     <div class="api-key-header">
                         <span><i class="fas fa-key"></i> API Key</span>
@@ -1208,19 +1272,21 @@
 
         </div>
 
-        <!-- FOOTER -->
+        <!-- ===== FOOTER (branded) ===== -->
         <footer class="footer">
-            <p>&copy; 2026 Sarthak URL. <strong>Developed by Sarthak</strong></p>
+            <p>&copy; 2026 <a href="/" style="color:var(--purple-700); text-decoration:none;"><strong>Sarthak URL Shortener</strong></a> – Free URL Shortener &amp; Analytics. Developed by Sarthak</p>
             <div class="footer-links">
                 <a href="/privacy">Privacy</a>
                 <a href="/terms">Terms</a>
                 <a href="/contact">Contact</a>
                 <a href="/api">API Docs</a>
+                <a href="/analytics">Analytics</a>
             </div>
         </footer>
 
     </div>
 
+    <!-- ===== JAVASCRIPT (unchanged) ===== -->
     <script>
         (function() {
             'use strict';
@@ -1362,7 +1428,7 @@
                         totalApiCalls += 1;
                         updateStatsUI();
 
-                        // 🔥 Show analytics button
+                        // Show analytics button
                         const slug = result.short.split('/').pop();
                         analyticsLink.href = `/analytics?slug=${slug}`;
                         analyticsLink.style.display = 'inline-flex';
@@ -1484,5 +1550,6 @@
             analyticsLink.style.display = 'none';
         })();
     </script>
+
 </body>
 </html>
