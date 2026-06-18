@@ -12,13 +12,14 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
 
+    <!-- Same style as privacy.html -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <style>
-        /* Same base styles as privacy.html */
+        /* exactly same as privacy.html – copy the CSS block */
         *,
         *::before,
         *::after {
@@ -227,11 +228,13 @@
             margin-bottom: 0.8rem;
             line-height: 1.7;
             color: var(--gray-700);
+            text-align: left;
         }
         ul {
             margin-left: 1.5rem;
             margin-bottom: 1rem;
             color: var(--gray-700);
+            text-align: left;
         }
         ul li {
             margin-bottom: 0.4rem;
@@ -273,6 +276,8 @@
             .nav-links a {
                 padding: 0.5rem 0.8rem;
                 border-radius: var(--radius-sm);
+                text-align: left;
+                width: 100%;
             }
             .logo {
                 font-size: 1.2rem;
@@ -353,7 +358,7 @@
 
     <div class="container">
 
-        <!-- NAVBAR (UPDATED) -->
+        <!-- NAVBAR -->
         <nav class="navbar">
             <div class="logo"><i class="fas fa-link"></i> Sarthak URL</div>
             <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
@@ -368,7 +373,7 @@
         </nav>
 
         <!-- HERO BANNER -->
-        <div class="hero-banner glass">
+        <div class="hero-banner">
             <img src="/assets/banner.jpg" alt="Sarthak URL Terms of Service" />
         </div>
 
@@ -422,7 +427,7 @@
                 <a href="/terms">Terms</a>
                 <a href="/contact">Contact</a>
                 <a href="/api">API Docs</a>
-                <a href="/analytics">Analytics</a>
+                <!-- View Analytics removed -->
             </div>
         </footer>
 
