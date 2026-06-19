@@ -11,13 +11,13 @@
     <title>Sarthak URL Shortener – Free Link Shortener with Custom Aliases & Analytics</title>
     <meta name="description" content="Sarthak URL Shortener is the best free tool to shorten long URLs, create custom aliases, generate QR codes, and track click analytics. Start shortening now." />
     <meta name="keywords" content="Sarthak URL Shortener, Sarthak URL, free URL shortener, link analytics tool, custom aliases, QR code generator, short links, branded links" />
-    <link rel="canonical" href="https://sarthakurls.vercel.app/" />
+    <link rel="canonical" href="https://sarthakurl.vercel.app/" />
     
     <!-- Open Graph -->
     <meta property="og:title" content="Sarthak URL Shortener – Free Link Shortener & Analytics" />
     <meta property="og:description" content="Shorten, brand, and track your links with Sarthak URL Shortener – free custom aliases, QR codes, and powerful analytics." />
-    <meta property="og:image" content="https://sarthakurls.vercel.app/assets/banner.jpg" />
-    <meta property="og:url" content="https://sarthakurls.vercel.app/" />
+    <meta property="og:image" content="https://sarthakurl.vercel.app/assets/banner.jpg" />
+    <meta property="og:url" content="https://sarthakurl.vercel.app/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Sarthak URL Shortener" />
     <meta property="og:locale" content="en_US" />
@@ -35,7 +35,7 @@
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "Sarthak URL Shortener",
-      "url": "https://sarthakurls.vercel.app/",
+      "url": "https://sarthakurl.vercel.app/",
       "description": "Free URL shortener with custom aliases, QR codes, and link analytics.",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "All",
@@ -44,7 +44,7 @@
         "@type": "CreateAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "https://sarthakurls.vercel.app/api/shorten",
+          "urlTemplate": "https://sarthakurl.vercel.app/api/shorten",
           "actionPlatform": [
             "http://schema.org/DesktopWebPlatform",
             "http://schema.org/MobileWebPlatform"
@@ -64,10 +64,10 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Sarthak URL Shortener",
-      "url": "https://sarthakurls.vercel.app/",
-      "logo": "https://sarthakurls.vercel.app/assets/favicon.ico",
+      "url": "https://sarthakurl.vercel.app/",
+      "logo": "https://sarthakurl.vercel.app/assets/favicon.ico",
       "email": "NotUrDaquavis@gmail.com",
-      "description": "Sarthak Url is Best free URL shortener with custom aliases and analytics."
+      "description": "Best free URL shortener with custom aliases and analytics."
     }
     </script>
 
@@ -81,7 +81,7 @@
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://sarthakurls.vercel.app/"
+          "item": "https://sarthakurl.vercel.app/"
         }
       ]
     }
@@ -286,52 +286,52 @@
             color: var(--purple-700);
         }
         .hero-banner {
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    margin-bottom: 2rem;
-    background: linear-gradient(135deg, #f5eeff, #ede6ff, #faf5ff);
-    border: 1px solid rgba(192, 132, 252, 0.15);
-    position: relative;
-    min-height: 120px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    text-align: center;
-}
-
-.hero-banner h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.8rem, 5vw, 3rem);
-    font-weight: 700;
-    font-style: italic;
-    background: linear-gradient(135deg, var(--purple-800), var(--purple-500));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    letter-spacing: -0.5px;
-    margin: 1.5rem 1.5rem 0.5rem;
-}
-
-.hero-banner p {
-    color: var(--gray-600);
-    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-    max-width: 600px;
-    margin: 0 auto 1rem;
-    padding: 0 1.5rem;
-}
-
-.hero-banner img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-    max-height: 280px;
-    min-height: 80px;
-    border-radius: 0;
-    margin: 0;
-}
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #f5eeff, #ede6ff, #faf5ff);
+            border: 1px solid rgba(192, 132, 252, 0.15);
+            position: relative;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            text-align: center;
+        }
+        .hero-banner .hero-content {
+            padding: 2rem 1.5rem 0.5rem 1.5rem;
+        }
+        .hero-banner h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 700;
+            font-style: italic;
+            background: linear-gradient(135deg, var(--purple-800), var(--purple-500));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+        .hero-banner p {
+            color: var(--gray-600);
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            max-height: 320px;
+            min-height: 80px;
+            border-radius: 0;
+            margin-top: auto;
+        }
         .main-grid {
             display: grid;
             grid-template-columns: 1.3fr 0.9fr;
@@ -914,10 +914,13 @@
                 min-height: 70px;
                 border-radius: var(--radius-md);
                 margin-bottom: 1.2rem;
-                padding: 1.2rem 1.2rem 0 1.2rem;
+                padding: 0;
+            }
+            .hero-banner .hero-content {
+                padding: 1.2rem 1.2rem 0.5rem 1.2rem;
             }
             .hero-banner img {
-                max-height: 160px;
+                max-height: 180px;
                 min-height: 60px;
             }
             .shortener-card {
@@ -1175,10 +1178,12 @@
             </div>
         </nav>
 
-        <!-- ===== HERO BANNER (with H1, text, and image) ===== -->
-        <div class="hero-banner">
-            <h1>Sarthak URL Shortener – The Best Free Link Shortener</h1>
-            <p>Shorten, brand, and track your links with custom aliases, QR codes, and real‑time analytics – all for free.</p>
+        <!-- ===== HERO BANNER (with H1, text, and full-width image) ===== -->
+        <div class="hero-banner glass">
+            <div class="hero-content">
+                <h1>Sarthak URL Shortener – The Best Free Link Shortener</h1>
+                <p>Shorten, brand, and track your links with custom aliases, QR codes, and real‑time analytics – all for free.</p>
+            </div>
             <img src="/assets/banner.jpg" alt="Sarthak URL Shortener – free URL shortener dashboard with analytics" loading="lazy" />
         </div>
 
@@ -1260,7 +1265,7 @@
                         <i class="fas fa-terminal"></i> Quick start
                     </div>
                     <div class="api-snippet">
-                        <code><span class="tk-keyword">fetch</span>(<span class="tk-string">"https://sarthakurls.vercel.app/api/shorten"</span>, {
+                        <code><span class="tk-keyword">fetch</span>(<span class="tk-string">"https://sarthakurl.vercel.app/api/shorten"</span>, {
                         method: <span class="tk-string">"POST"</span>,
                         headers: { <span class="tk-string">"x-api-key"</span>: <span class="tk-string">"YOUR_KEY"</span> },
                         body: <span class="tk-function">JSON</span>.<span class="tk-keyword">stringify</span>({
@@ -1281,6 +1286,7 @@
                 <a href="/terms">Terms</a>
                 <a href="/contact">Contact</a>
                 <a href="/api">API Docs</a>
+                <a href="/analytics">Analytics</a>
             </div>
         </footer>
 
