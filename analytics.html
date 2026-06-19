@@ -5,7 +5,7 @@
     <meta name="theme-color" content="#c026d3">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>Sarthak URL – Analytics</title>
-    <link rel="canonical" href="https://sarthakurls.vercel.app/analytics" />
+    <link rel="canonical" href="https://sarthakurl.vercel.app/analytics" />
     <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -657,7 +657,7 @@
 
                 <!-- ===== INPUT ===== -->
                 <div class="analytics-input-wrap">
-                    <input type="text" id="slugInput" placeholder="e.g. https://sarthakurls.vercel.app/abc123 or just abc123" />
+                    <input type="text" id="slugInput" placeholder="e.g. https://sarthakurl.vercel.app/abc123 or just abc123" />
                     <button id="loadAnalyticsBtn" class="btn-primary"><i class="fas fa-search"></i> Load Analytics</button>
                 </div>
 
@@ -810,7 +810,7 @@
                 `;
             }
 
-            // ===== RENDER CHARTS =====
+            // ===== RENDER CHARTS (VIBRANT MULTI-COLOR) =====
             function renderCharts(data) {
                 // Destroy existing charts
                 Object.values(chartInstances).forEach(chart => chart.destroy());
@@ -818,7 +818,7 @@
 
                 const isMobile = window.innerWidth < 768;
 
-                // --- 7-Day Chart ---
+                // --- 7-Day Chart (Line) – Blue to Purple gradient ---
                 const labels = data.chartData.map(d => d.date);
                 const values = data.chartData.map(d => d.clicks);
                 const ctxDaily = document.getElementById('dailyChart').getContext('2d');
@@ -829,12 +829,12 @@
                         datasets: [{
                             label: 'Clicks',
                             data: values,
-                            borderColor: '#7c3aed',
-                            backgroundColor: 'rgba(124, 58, 237, 0.10)',
-                            borderWidth: 2.5,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                            borderWidth: 3,
                             tension: 0.3,
                             fill: true,
-                            pointBackgroundColor: '#7c3aed',
+                            pointBackgroundColor: '#3b82f6',
                             pointBorderColor: '#ffffff',
                             pointBorderWidth: 2,
                             pointRadius: isMobile ? 3 : 4
@@ -851,11 +851,11 @@
                     }
                 });
 
-                // --- Device Chart (Pie) ---
+                // --- Device Chart (Pie) – Vibrant rainbow ---
                 const devices = data.devices || {};
                 const deviceLabels = Object.keys(devices);
                 const deviceValues = Object.values(devices);
-                const deviceColors = ['#7c3aed', '#a855f7', '#c084fc', '#e9d5ff', '#3b82f6'];
+                const deviceColors = ['#8b5cf6', '#06b6d4', '#f59e0b', '#ef4444', '#10b981', '#ec4899'];
                 const ctxDevice = document.getElementById('deviceChart').getContext('2d');
                 chartInstances.device = new Chart(ctxDevice, {
                     type: 'pie',
@@ -880,11 +880,11 @@
                     }
                 });
 
-                // --- Browser Chart (Bar) ---
+                // --- Browser Chart (Bar) – Multi-color palette ---
                 const browsers = data.browsers || {};
                 const browserLabels = Object.keys(browsers);
                 const browserValues = Object.values(browsers);
-                const browserColors = ['#7c3aed', '#a855f7', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4'];
+                const browserColors = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#ec4899', '#f97316'];
                 const ctxBrowser = document.getElementById('browserChart').getContext('2d');
                 chartInstances.browser = new Chart(ctxBrowser, {
                     type: 'bar',
@@ -908,13 +908,11 @@
                     }
                 });
 
-                // --- Country Chart (Bar) ---
+                // --- Country Chart (Bar) – Rich diverse colors ---
                 const countries = data.countries || {};
                 const countryLabels = Object.keys(countries);
                 const countryValues = Object.values(countries);
-                const countryColors = ['#7c3aed', '#a855f7', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#ec4899',
-                    '#14b8a6'
-                ];
+                const countryColors = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#ec4899', '#14b8a6', '#f97316', '#6366f1'];
                 const ctxCountry = document.getElementById('countryChart').getContext('2d');
                 chartInstances.country = new Chart(ctxCountry, {
                     type: 'bar',
@@ -1008,7 +1006,6 @@
             window.addEventListener('resize', function() {
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(() => {
-                    // If dashboard is visible, rebuild charts
                     if (!dashboard.classList.contains('hidden')) {
                         const slug = extractSlug(slugInput.value.trim());
                         if (slug) {
