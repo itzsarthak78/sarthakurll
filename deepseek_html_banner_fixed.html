@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Digital space By Sarthak | Red & White · Anime Aesthetic</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ========== LOADING SCREEN OVERLAY ========== */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #fef9f5 0%, #fff5f0 100%);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1.5rem;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .loading-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .logo-circle {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 15px 35px rgba(197, 58, 58, 0.3), 0 0 0 4px #fff, 0 0 0 8px rgba(198,42,42,0.3);
+            animation: floatLogo 2s ease-in-out infinite, glowPulse 1.8s ease infinite;
+        }
+
+        @keyframes floatLogo {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 15px 35px rgba(197,58,58,0.2), 0 0 0 4px #fff, 0 0 0 8px rgba(198,42,42,0.2); }
+            50% { box-shadow: 0 20px 40px rgba(197,58,58,0.5), 0 0 0 4px #fff, 0 0 0 14px rgba(198,42,42,0.5); }
+            100% { box-shadow: 0 15px 35px rgba(197,58,58,0.2), 0 0 0 4px #fff, 0 0 0 8px rgba(198,42,42,0.2); }
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #c54444;
+            letter-spacing: 3px;
+            font-family: monospace;
+            background: rgba(198,42,42,0.12);
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid rgba(198,42,42,0.2);
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 10px;
+            margin-top: 0.2rem;
+        }
+
+        .loading-dots span {
+            width: 9px;
+            height: 9px;
+            background: #c62a2a;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.5); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* ========== MAIN SITE ========== */
+        .main-site {
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .main-site.visible {
+            opacity: 1;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fef9f5 0%, #fff5f0 100%);
+            font-family: 'Segoe UI', 'Poppins', 'Helvetica Neue', system-ui, sans-serif;
+            color: #1a1a1a;
+            scroll-behavior: smooth;
+            position: relative;
+        }
+
+        /* ENHANCED RED GLOW BACKGROUND */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(198,42,42,0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(198,42,42,0.04) 0%, transparent 60%);
+        }
+
+        /* PAINT SPLASHES */
+        .splash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200"><path fill="%23c62a2a" opacity="0.06" d="M120,80 Q140,40 180,60 T220,100 T180,140 T120,120 Z M560,320 Q590,290 620,320 T610,380 T560,380 T530,340 Z M90,750 Q130,720 160,760 T140,830 T80,810 T70,770 Z M680,880 Q720,850 750,890 T730,960 T660,950 T650,900 Z M400,1050 Q430,1010 470,1050 T450,1120 T380,1100 T370,1060 Z"></path><circle cx="720" cy="500" r="18" fill="%23c62a2a" opacity="0.05"/><circle cx="80" cy="420" r="25" fill="%23c62a2a" opacity="0.04"/></svg>');
+            background-repeat: repeat;
+            background-size: 380px;
+        }
+
+        /* GLOWING INK DRIPS */
+        .ink-drip {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(ellipse at 70% 30%, rgba(198,42,42,0.15), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            filter: blur(25px);
+        }
+
+        .ink-drip-left {
+            position: fixed;
+            top: 15%;
+            left: -80px;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(198,42,42,0.12), transparent);
+            pointer-events: none;
+            z-index: 1;
+            filter: blur(30px);
+        }
+
+        :root {
+            --red: #c62a2a;
+            --red-dark: #a12121;
+            --red-glow: rgba(198,42,42,0.4);
+            --red-soft: #fde7e7;
+            --gray-light: #f8f8f8;
+            --border-light: #f0e0e0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* VIDEO HERO - WITH GLOW */
+        .video-hero {
+            width: 100%;
+            background: #0a0a0a;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(198,42,42,0.15);
+            border-bottom: 3px solid var(--red);
+            border-radius: 0 0 32px 32px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+        .video-hero:hover {
+            box-shadow: 0 25px 50px rgba(198,42,42,0.25);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            overflow: hidden;
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+            filter: brightness(1.02) contrast(1.05);
+        }
+
+        .video-overlay {
+            position: absolute;
+            bottom: 1.2rem;
+            right: 1.5rem;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(10px);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            color: var(--red);
+            font-weight: 600;
+            letter-spacing: 1px;
+            border: 1px solid rgba(198,42,42,0.5);
+            font-family: monospace;
+            z-index: 20;
+            box-shadow: 0 0 15px rgba(198,42,42,0.3);
+        }
+
+        /* SECTIONS WITH GLOW ON HOVER */
+        section {
+            margin: 5rem 0;
+            scroll-margin-top: 2rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            border-left: 6px solid var(--red);
+            padding-left: 1.2rem;
+            margin-bottom: 2.5rem;
+            color: #1a1a1a;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            display: inline-block;
+            text-shadow: 0 0 5px rgba(198,42,42,0.2);
+        }
+
+        .section-title:hover {
+            transform: skewX(-3deg) translateX(5px);
+            padding-left: 1.8rem;
+            border-left-width: 8px;
+            text-shadow: 0 0 12px rgba(198,42,42,0.4);
+        }
+
+        /* GLOWING CARDS */
+        .about-grid, .more-paragraph, .trusted-card, .bot-card, .contact-methods, .copyright-policy {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(0px);
+            border-radius: 32px;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03), 0 0 0 1px rgba(198,42,42,0.05);
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .about-grid:hover, .more-paragraph:hover, .trusted-card:hover, .bot-card:hover, .contact-methods:hover, .copyright-policy:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 40px rgba(198,42,42,0.12), 0 0 0 1px rgba(198,42,42,0.2);
+            border-color: rgba(198,42,42,0.3);
+        }
+
+        /* About Grid */
+        .about-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .info-block {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .info-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--red);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1f1f1f;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge-sm {
+            background: var(--red-soft);
+            display: inline-block;
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            color: var(--red-dark);
+            font-weight: 500;
+        }
+
+        .name-highlight {
+            background: linear-gradient(120deg, #fff0f0, #ffe0e0);
+            padding: 0.1rem 0.4rem;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        /* More Paragraph */
+        .more-paragraph {
+            padding: 2rem 2.2rem;
+            font-size: 1.1rem;
+            line-height: 1.65;
+            color: #2c2c2c;
+            position: relative;
+            font-style: normal;
+        }
+
+        .more-paragraph::before {
+            content: "“";
+            font-size: 5rem;
+            font-family: serif;
+            color: var(--red);
+            opacity: 0.2;
+            position: absolute;
+            top: -0.2rem;
+            left: 1.2rem;
+        }
+
+        /* Trusted Card */
+        .trusted-card {
+            text-align: center;
+            padding: 2.5rem 2rem;
+        }
+
+        .trusted-quote {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--red);
+            letter-spacing: -0.5px;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 8px rgba(198,42,42,0.3);
+        }
+
+        .vouch-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--red-soft);
+            padding: 0.7rem 1.6rem;
+            border-radius: 60px;
+            text-decoration: none;
+            color: var(--red-dark);
+            font-weight: 700;
+            transition: all 0.25s;
+            border: 1px solid rgba(198,42,42,0.2);
+        }
+
+        .vouch-link:hover {
+            background: var(--red);
+            color: white;
+            transform: scale(0.97);
+            box-shadow: 0 5px 20px rgba(198,42,42,0.4);
+        }
+
+        /* Bot Card */
+        .bot-card {
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .bot-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bot-info h3 i {
+            color: var(--red);
+            filter: drop-shadow(0 0 4px rgba(198,42,42,0.5));
+        }
+
+        .bot-btn {
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            color: white;
+            text-decoration: none;
+            padding: 0.7rem 1.6rem;
+            border-radius: 60px;
+            font-weight: 600;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(198,42,42,0.3);
+        }
+
+        .bot-btn:hover {
+            transform: scale(0.96);
+            box-shadow: 0 6px 20px rgba(198,42,42,0.5);
+            background: var(--red-dark);
+        }
+
+        /* Contact Methods */
+        .contact-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .contact-item {
+            flex: 1;
+            min-width: 200px;
+            background: var(--gray-light);
+            border-radius: 24px;
+            padding: 1.2rem 1.4rem;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .contact-item:hover {
+            background: #fff0f0;
+            border-left: 4px solid var(--red);
+            transform: translateY(-5px) translateX(4px);
+            border-color: rgba(198,42,42,0.2);
+        }
+
+        .contact-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--red);
+            letter-spacing: 1.5px;
+        }
+
+        .contact-value a {
+            color: #1f1f1f;
+            text-decoration: none;
+            border-bottom: 1.5px dashed var(--red);
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .contact-value a:hover {
+            color: var(--red);
+            border-bottom-style: solid;
+        }
+
+        /* Copyright */
+        .copyright-policy {
+            margin: 4rem 0 5rem;
+            padding: 2rem 2.2rem;
+            border-left: 6px solid var(--red);
+        }
+
+        .copyright-policy h4 {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--red-dark);
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 2rem 0 3rem;
+            border-top: 1px solid var(--border-light);
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .red-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--red);
+            display: inline-block;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            box-shadow: 0 0 6px var(--red);
+            animation: pulseDot 1.5s infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.2); }
+        }
+
+        @media (max-width: 720px) {
+            .container { padding: 0 1.2rem; }
+            .section-title { font-size: 1.5rem; }
+            .trusted-quote { font-size: 1.4rem; }
+            .info-value { font-size: 1.1rem; }
+        }
+    
+.hero-banner{
+    padding:0 !important;
+    overflow:hidden;
+}
+.hero-banner h1,
+.hero-banner p{
+    padding:1.5rem 1.5rem 0;
+}
+.hero-banner img{
+    display:block;
+    width:calc(100% + 2px);
+    max-width:none;
+    height:auto;
+    margin:0 -1px;
+    border-radius:0;
+    object-fit:cover;
+}
+@media (max-width:768px){
+    .hero-banner{
+        padding:0 !important;
+    }
+    .hero-banner h1,
+    .hero-banner p{
+        padding:1rem 1rem 0;
+    }
+    .hero-banner img{
+        width:calc(100% + 2px);
+        margin:0 -1px;
+    }
+}
+
+</style>
+</head>
+<body>
+
+    <!-- LOADING SCREEN -->
+    <div class="loading-screen" id="loadingScreen">
+        <img class="logo-circle" src="https://i.ibb.co/cXv6kq4p/blob.jpg" alt="Sarthak Logo" onerror="this.src='https://placehold.co/130x130/c62a2a/white?text=S'">
+        <div class="loading-text">DIGITAL SPACE</div>
+        <div class="loading-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <!-- MAIN SITE -->
+    <div class="main-site" id="mainSite">
+        <div class="splash-overlay"></div>
+        <div class="ink-drip"></div>
+        <div class="ink-drip-left"></div>
+
+        <!-- VIDEO HERO -->
+        <div class="video-hero">
+            <div class="video-wrapper">
+                <video autoplay loop muted playsinline id="heroVideo">
+                    <source src="https://www.image2url.com/r2/default/videos/1780074218616-46a1303b-ac95-42c1-9a45-5ebf481217bd.mp4" type="video/mp4">
+                </video>
+                <div class="video-overlay">
+                    ✦ 赤と白 ✦
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- ABOUT Section - Added COUNTRY INDIA -->
+            <section id="about">
+                <h2 class="section-title"><span class="red-dot"></span> About</h2>
+                <div class="about-grid">
+                    <div class="info-block"><div class="info-label">name</div><div class="info-value"><span class="name-highlight">Sarthak</span></div></div>
+                    <div class="info-block"><div class="info-label">country</div><div class="info-value">🇮🇳 India <span class="badge-sm">भारत</span></div></div>
+                    <div class="info-block"><div class="info-label">state</div><div class="info-value">Bihar <span class="badge-sm">बिहार</span></div></div>
+                    <div class="info-block"><div class="info-label">religion</div><div class="info-value">Sanatan <i class="fas fa-om" style="color:#c62a2a;"></i></div></div>
+                    <div class="info-block"><div class="info-label">favorites</div><div class="info-value">🎮 Gaming Freak</div></div>
+                </div>
+            </section>
+
+            <!-- MORE / MINDSET -->
+            <section id="more">
+                <h2 class="section-title"><span class="red-dot"></span> More / Mindset</h2>
+                <div class="more-paragraph">
+                    “I'm not here to impress everyone. I just like building my own space, staying lowkey, and doing things differently. Most of my time goes into music, gaming, random late-night ideas, and improving myself quietly. Clean aesthetics, calm energy, and a mindset that never stays average.”
+                </div>
+            </section>
+
+            <!-- TRUSTED -->
+            <div class="trusted-section">
+                <h2 class="section-title"><span class="red-dot"></span> Trusted</h2>
+                <div class="trusted-card">
+                    <div class="trusted-quote">✦ Deals Fade, Trust Stays ✦</div>
+                    <div style="margin-bottom: 1.2rem; color: #555;">Built on transparency, respect, and real connections.</div>
+                    <a href="https://t.me/SarthakXVouch" target="_blank" rel="noopener noreferrer" class="vouch-link">
+                        <i class="fab fa-telegram"></i> Proof @SarthakXVouch
+                    </a>
+                </div>
+            </div>
+
+            <!-- MY BOTS TELEGRAM -->
+            <section id="telegram-bot">
+                <h2 class="section-title"><span class="red-dot"></span> My Bots · Telegram</h2>
+                <div class="bot-card">
+                    <div class="bot-info">
+                        <h3><i class="fab fa-telegram"></i> @SensieSarthak</h3>
+                        <p style="margin-top: 0.3rem; color:#666;">✦ Checkout The Amazing Profile ✦ — anime aesthetics, bots & updates.</p>
+                    </div>
+                    <a href="https://t.me/SensieSarthak" target="_blank" rel="noopener noreferrer" class="bot-btn">
+                        <i class="fab fa-telegram-plane"></i> Visit Profile
+                    </a>
+                </div>
+            </section>
+
+            <!-- WORK WITH ME -->
+            <section id="work">
+                <h2 class="section-title"><span class="red-dot"></span> Work With Me</h2>
+                <div class="contact-methods">
+                    <div class="contact-item">
+                        <div class="contact-label"><i class="far fa-envelope"></i> email</div>
+                        <div class="contact-value"><a href="mailto:elector.ton@icloud.com">elector.ton@icloud.com</a></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label"><i class="fab fa-telegram"></i> telegram (main)</div>
+                        <div class="contact-value"><a href="https://t.me/SensieSarthak" target="_blank">@SensieSarthak</a> or <a href="https://t.me/Xtrior" target="_blank">@Xtrior</a></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label"><i class="fas fa-robot"></i> work bot</div>
+                        <div class="contact-value"><a href="https://t.me/SarthakPortfolioBot" target="_blank">@SarthakPortfolioBot</a></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COPYRIGHT POLICY -->
+            <div class="copyright-policy">
+                <h4>© Digital Space By Sarthak — All Rights Reserved</h4>
+                <p>All original content, design elements, custom code, and visual aesthetics featured on this website are the exclusive property of Sarthak / Digital Space. Any unauthorized reproduction, redistribution, or modification of this material is strictly prohibited.</p>
+                <p>For collaborations, licensing, or inquiries, please reach out via the official Telegram or email channels listed above. Respect the space — be original, stay trusted.</p>
+                <div class="policy-sign">
+                    <i class="fas fa-shield-alt" style="color:#c62a2a;"></i> Last updated: 2026 · Built with intent · India · 赤と白
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer-note">
+            <div class="container">
+                <span>✦ Digital Space By Sarthak ✦ Work · Profile · Core ✦ India ✦</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        (function() {
+            // LOADING SCREEN
+            const loadingScreen = document.getElementById('loadingScreen');
+            const mainSite = document.getElementById('mainSite');
+            let loaded = false;
+            
+            function hideLoadingScreen() {
+                if (!loaded) return;
+                loadingScreen.classList.add('fade-out');
+                mainSite.classList.add('visible');
+                setTimeout(() => {
+                    if (loadingScreen.parentNode) loadingScreen.style.display = 'none';
+                }, 800);
+            }
+            
+            window.addEventListener('load', () => {
+                loaded = true;
+                setTimeout(hideLoadingScreen, 500);
+            });
+            
+            setTimeout(() => {
+                if (!loaded) { loaded = true; hideLoadingScreen(); }
+            }, 2000);
+            
+            // VIDEO
+            const video = document.getElementById('heroVideo');
+            if (video) {
+                video.addEventListener('ended', function() { this.currentTime = 0; this.play().catch(()=>{}); });
+                const startPlay = () => { if(video.paused) video.play().catch(()=>{}); document.body.removeEventListener('click', startPlay); document.body.removeEventListener('touchstart', startPlay); };
+                document.body.addEventListener('click', startPlay);
+                document.body.addEventListener('touchstart', startPlay);
+                video.play().catch(()=>console.log("autoplay needs interaction"));
+            }
+            
+            // SMOOTH SCROLL
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if(target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+                });
+            });
+            
+            // CONSOLE
+            console.log("%c✦ DIGITAL SPACE // SARTHAK // INDIA ✦", "color: #c62a2a; font-size: 15px; font-weight: bold;");
+            console.log("%cRed & White · Glow Effects · Trust Stays · Unfinished Edge", "color: #a12121; font-size: 12px;");
+        })();
+    </script>
+</body>
+</html>
