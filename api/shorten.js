@@ -1,4 +1,5 @@
 import { kv } from '@vercel/kv';
+import bcrypt from 'bcryptjs';  // ← New import
 
 export default async function handler(req, res) {
   // Only POST allowed
@@ -6,7 +7,8 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { url, custom } = req.body;
+  // ← Added 'password' to destructuring
+  const { url, custom, password } = req.body;
   if (!url) {
     return res.status(400).json({ error: 'URL is required' });
   }
@@ -43,6 +45,13 @@ export default async function handler(req, res) {
 
   // Store the mapping: key = short:slug, value = original URL
   await kv.set(`short:${slug}`, url);
+
+  // ===== NEW: Store password hash if provided =====
+  if (password && password.length > 0) {
+    const saltRounds = 10;
+    const hashed = await bcrypt.hash(password, saltRounds);
+    await kv.set(`password:${slug}`, hashed);
+  }
 
   // (Optional) Increment total links counter
   await kv.incr('stats:total_links');
