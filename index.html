@@ -7,17 +7,17 @@
     <!-- Google Site Verification -->
     <meta name="google-site-verification" content="FsjTlPTiFgnIe-eo6N8XJVcWmDFvh9fqjmtJvjg895w" />
     
-    <!-- ===== PRIMARY SEO TITLE (includes exact keyword) ===== -->
+    <!-- ===== PRIMARY SEO TITLE ===== -->
     <title>Sarthak URL Shortener – Free Link Shortener with Custom Aliases & Analytics</title>
     <meta name="description" content="Sarthak URL Shortener is the best free tool to shorten long URLs, create custom aliases, generate QR codes, and track click analytics. Start shortening now." />
     <meta name="keywords" content="Sarthak URL Shortener, Sarthak URL, free URL shortener, link analytics tool, custom aliases, QR code generator, short links, branded links" />
-    <link rel="canonical" href="https://sarthakurl.vercel.app/" />
+    <link rel="canonical" href="https://sarthakurll.vercel.app/" />
     
     <!-- Open Graph -->
     <meta property="og:title" content="Sarthak URL Shortener – Free Link Shortener & Analytics" />
     <meta property="og:description" content="Shorten, brand, and track your links with Sarthak URL Shortener – free custom aliases, QR codes, and powerful analytics." />
-    <meta property="og:image" content="https://sarthakurl.vercel.app/assets/banner.jpg" />
-    <meta property="og:url" content="https://sarthakurl.vercel.app/" />
+    <meta property="og:image" content="https://sarthakurll.vercel.app/assets/banner.jpg" />
+    <meta property="og:url" content="https://sarthakurll.vercel.app/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Sarthak URL Shortener" />
     <meta property="og:locale" content="en_US" />
@@ -35,7 +35,7 @@
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "Sarthak URL Shortener",
-      "url": "https://sarthakurl.vercel.app/",
+      "url": "https://sarthakurll.vercel.app/",
       "description": "Free URL shortener with custom aliases, QR codes, and link analytics.",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "All",
@@ -44,7 +44,7 @@
         "@type": "CreateAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "https://sarthakurl.vercel.app/api/shorten",
+          "urlTemplate": "https://sarthakurll.vercel.app/api/shorten",
           "actionPlatform": [
             "http://schema.org/DesktopWebPlatform",
             "http://schema.org/MobileWebPlatform"
@@ -64,8 +64,8 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Sarthak URL Shortener",
-      "url": "https://sarthakurl.vercel.app/",
-      "logo": "https://sarthakurl.vercel.app/assets/favicon.ico",
+      "url": "https://sarthakurll.vercel.app/",
+      "logo": "https://sarthakurll.vercel.app/assets/favicon.ico",
       "email": "NotUrDaquavis@gmail.com",
       "description": "Best free URL shortener with custom aliases and analytics."
     }
@@ -81,7 +81,7 @@
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://sarthakurl.vercel.app/"
+          "item": "https://sarthakurll.vercel.app/"
         }
       ]
     }
@@ -95,7 +95,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
-        /* ===== YOUR EXISTING CSS – kept exactly as is ===== */
+        /* ===== RESET & VARIABLES ===== */
         *,
         *::before,
         *::after {
@@ -403,6 +403,59 @@
         .input-premium:hover {
             border-color: var(--purple-300);
         }
+
+        /* ===== PASSWORD TOGGLE STYLES ===== */
+        .password-toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.3rem 0;
+            cursor: pointer;
+        }
+        .password-toggle-wrap input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--purple-600);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .password-toggle-wrap .toggle-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            user-select: none;
+        }
+        .password-toggle-wrap .toggle-label i {
+            color: var(--purple-500);
+            font-size: 0.9rem;
+        }
+        .password-field-wrap {
+            display: none;
+            margin-bottom: 0.5rem;
+            animation: fadeSlideUp 0.3s ease;
+        }
+        .password-field-wrap.show {
+            display: block;
+        }
+        .password-field-wrap .input-premium {
+            padding-right: 3rem;
+        }
+        .password-field-wrap .password-hint {
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            margin-top: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .password-field-wrap .password-hint i {
+            font-size: 0.65rem;
+        }
+
         .btn-primary {
             background: linear-gradient(135deg, var(--purple-700), var(--purple-600), var(--purple-500));
             border: none;
@@ -946,6 +999,9 @@
                 font-size: 0.9rem;
                 border-radius: var(--radius-sm);
             }
+            .password-toggle-wrap .toggle-label {
+                font-size: 0.75rem;
+            }
             .stats-row {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 0.5rem;
@@ -1178,7 +1234,7 @@
             </div>
         </nav>
 
-        <!-- ===== HERO BANNER (with H1, text, and full-width image) ===== -->
+        <!-- ===== HERO BANNER ===== -->
         <div class="hero-banner glass">
             <div class="hero-content">
                 <h1>Sarthak URL Shortener – The Best Free Link Shortener</h1>
@@ -1199,6 +1255,21 @@
                 <div class="input-group">
                     <input type="text" id="longUrl" class="input-premium" placeholder="Paste your long URL here..." autocomplete="off">
                     <input type="text" id="customAlias" class="input-premium" placeholder="Custom alias (optional)" autocomplete="off">
+
+                    <!-- ===== PASSWORD PROTECTION TOGGLE ===== -->
+                    <div class="password-toggle-wrap" onclick="document.getElementById('passwordToggle').click();">
+                        <input type="checkbox" id="passwordToggle" />
+                        <label class="toggle-label" for="passwordToggle">
+                            <i class="fas fa-lock"></i> Enable Password Protection
+                        </label>
+                    </div>
+                    <div class="password-field-wrap" id="passwordFieldWrap">
+                        <input type="password" id="shortPassword" class="input-premium" placeholder="Set a secure password..." autocomplete="off" />
+                        <div class="password-hint">
+                            <i class="fas fa-info-circle"></i> This link will ask for this password before redirecting.
+                        </div>
+                    </div>
+
                     <button id="shortenBtn" class="btn-primary">
                         <i class="fas fa-rocket"></i>
                         <span id="btnText">Generate short link</span>
@@ -1242,6 +1313,7 @@
                     <li><i class="fas fa-qrcode"></i> <strong>QR Codes</strong> – Generate instantly</li>
                     <li><i class="fas fa-chart-line"></i> <strong>Link Analytics</strong> – Track clicks in real-time</li>
                     <li><i class="fas fa-code"></i> <strong>Developer API</strong> – Integrate with ease</li>
+                    <li><i class="fas fa-lock"></i> <strong>Password Protection</strong> – Secure your links</li>
                     <li><i class="fas fa-shield-alt"></i> <strong>Secure &amp; fast</strong> – Enterprise-grade</li>
                 </ul>
                 <p style="margin-top:0.5rem; font-size:0.85rem;"><a href="/analytics" style="color:var(--purple-700); text-decoration:none; font-weight:500;">Learn more about our analytics →</a></p>
@@ -1291,7 +1363,7 @@
 
     </div>
 
-    <!-- ===== JAVASCRIPT (unchanged) ===== -->
+    <!-- ===== JAVASCRIPT ===== -->
     <script>
         (function() {
             'use strict';
@@ -1317,6 +1389,21 @@
             const navToggle = document.getElementById('navToggle');
             const navLinks = document.getElementById('navLinks');
             const analyticsLink = document.getElementById('analyticsLink');
+
+            // Password elements
+            const passwordToggle = document.getElementById('passwordToggle');
+            const passwordFieldWrap = document.getElementById('passwordFieldWrap');
+            const shortPassword = document.getElementById('shortPassword');
+
+            // ===== PASSWORD TOGGLE =====
+            passwordToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    passwordFieldWrap.classList.add('show');
+                } else {
+                    passwordFieldWrap.classList.remove('show');
+                    shortPassword.value = '';
+                }
+            });
 
             // State
             let usedAliases = new Set();
@@ -1420,7 +1507,14 @@
 
                 try {
                     const custom = customAliasInput.value.trim() || '';
-                    const body = JSON.stringify({ url, custom: custom || undefined });
+                    const password = passwordToggle.checked ? shortPassword.value.trim() : '';
+                    
+                    // Validate password if enabled
+                    if (passwordToggle.checked && password.length < 4) {
+                        throw new Error('Password must be at least 4 characters long.');
+                    }
+
+                    const body = JSON.stringify({ url, custom: custom || undefined, password });
                     const headers = { 'Content-Type': 'application/json' };
                     if (currentApiKey) headers['x-api-key'] = currentApiKey;
 
@@ -1437,6 +1531,11 @@
                         const slug = result.short.split('/').pop();
                         analyticsLink.href = `/analytics?slug=${slug}`;
                         analyticsLink.style.display = 'inline-flex';
+
+                        // Reset password field
+                        passwordToggle.checked = false;
+                        passwordFieldWrap.classList.remove('show');
+                        shortPassword.value = '';
 
                         if (window.innerWidth < 768) resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     } else {
@@ -1547,6 +1646,7 @@
             copyApiKeyBtn.addEventListener('click', copyApiKey);
             longUrlInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleShorten(); });
             customAliasInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleShorten(); });
+            shortPassword.addEventListener('keydown', e => { if (e.key === 'Enter') handleShorten(); });
 
             // Init
             renderApiKey();
